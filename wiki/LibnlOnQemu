@@ -1,0 +1,51 @@
+h2. Installing libnl on qemu
+
+You will need libnl installed correctly on your guest in order to run iw, wpa_supplicant, etc.  What worked for me:
+
+1. Install _gcc'' and ''make_ on your guest
+
+Halt qemu and then:
+<pre><code>
+mount -t ext3 /dev/loop0 /mnt/qemu-rootfs/
+chroot /mnt/qemu-rootfs/ /bin/bash
+apt-get install gcc make
+</code></pre>
+
+2. Build libnl on your host
+
+<pre><code>
+git clone git://git.kernel.org/pub/scm/libs/netlink/libnl.git
+cd libnl; ./configure; make
+</code></pre>
+
+3. Install on your guest
+
+Lunch qemu, cd /path/to/mounted/libnl/dir
+<pre><code>
+./configure --prefix=/usr
+make install
+</code></pre>
+
+Hmmm... apparently this needs to recompile a bunch of files and is taking a long time.  Well, this is a one time step so we can live with it.
+
+h2. Troubleshooting
+
+1. Seems to be a bug in libnl... If you get nl_sock redefinition errors, 
+
+<pre><code>
+In file included from /usr/include/netlink/handlers.h:19,
+                 from /usr/include/netlink/netlink.h:32,
+                 from /usr/include/netlink/genl/genl.h:15,
+                 from netlink.h:21,
+                 from main.c:18:
+/usr/include/netlink/netlink-kernel.h:9: error: redefinition of ‘struct sockaddr_nl’
+/usr/include/netlink/netlink-kernel.h:33: error: redefinition of ‘struct nlmsghdr’
+/usr/include/netlink/netlink-kernel.h:173: error: redefinition of ‘struct nlmsgerr’
+/usr/include/netlink/netlink-kernel.h:182: error: redefinition of ‘struct nl_pktinfo’
+/usr/include/netlink/netlink-kernel.h:229: error: redefinition of ‘struct nlattr’
+</code></pre>
+
+this is how to fix:
+<pre><code>
+sudo echo "#include <linux/netlink.h>" > /usr/include/netlink/netlink-kernel.h
+</code></pre>

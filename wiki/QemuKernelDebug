@@ -1,0 +1,68 @@
+h2. 1. Compile your kernel with symbols
+
+In your .config
+<pre><code>
+CONFIG_DEBUG_INFO=y
+</code></pre>
+
+h2. 2. Launch qemu with gdb enabled
+
+<pre><code>
+qemu -kernel (...) -gdb tcp::1234
+</code></pre>
+
+h2. 3. Launch gdb and attach to qemu
+
+<pre><code>
+gdb /path/to/vmlinux
+</code></pre>
+
+in gdb 
+<pre><code>
+target remote localhost:1234
+</code></pre>
+
+h2. 4. bt
+
+<pre><code>
+#0  ?? () at arch/x86/lib/semaphore_32.S:59
+#1  0xc14aa9b2 in arch_read_lock (lock=0xc16fb460) at /home/javier/dev/wireless-testing/arch/x86/include/asm/spinlock.h:251
+#2  __raw_read_lock (lock=0xc16fb460) at include/linux/rwlock_api_smp.h:150
+#3  _raw_read_lock (lock=0xc16fb460) at kernel/spinlock.c:209
+#4  0xc14848b1 in mesh_path_add (dst=<value optimized out>, sdata=0xc6d56400) at net/mac80211/mesh_pathtbl.c:283
+#5  0xc148645e in hwmp_route_info_get (sdata=0xc6d56400, mgmt=<value optimized out>, hwmp_ie=<value optimized out>, action=MPATH_PREQ) at net/mac80211/mesh_hwmp.c:401
+#6  0xc14865e0 in mesh_rx_path_sel_frame (sdata=0xc6d56400, mgmt=<value optimized out>, len=<value optimized out>) at net/mac80211/mesh_hwmp.c:744
+#7  0xc1483c02 in ieee80211_mesh_rx_mgmt_action (sdata=0xc16fb460, skb=<value optimized out>) at net/mac80211/mesh.c:607
+#8  ieee80211_mesh_rx_queued_mgmt (sdata=0xc16fb460, skb=<value optimized out>) at net/mac80211/mesh.c:633
+#9  0xc1474881 in ieee80211_iface_work (work=<value optimized out>) at net/mac80211/iface.c:807
+#10 0xc1040d0b in process_one_work (worker=0xc6e01480, work=0xc6d56694) at kernel/workqueue.c:1862
+#11 0xc1042143 in worker_thread (__worker=<value optimized out>) at kernel/workqueue.c:1973
+#12 0xc1044f0d in kthread (_create=0xc7563f18) at kernel/kthread.c:96
+#13 0xc14b0036 in ?? () at arch/x86/kernel/entry_32.S:1011
+#14 0x00000000 in ?? ()
+</code></pre>
+
+h2. Notes
+
+For the bug above apparently we could have obtained the same result without gdb by enabling CONFIG_LOCKUP_DETECTOR=y in your kernel.  This would dump a stack trace after looping more than 10 seconds if kernel mode.
+
+Indeed:
+<pre><code>
+[  293.386049]  [<c119fd04>] do_raw_read_lock+0x26/0x29
+[  293.386049]  [<c14b2982>] _raw_read_lock+0x8/0xa
+[  293.386049]  [<c148c178>] mesh_path_add+0xb7/0x24e
+[  293.386049]  [<c148b98d>] ? mesh_path_lookup+0x1b/0xa6
+[  293.386049]  [<c148ded5>] hwmp_route_info_get+0x276/0x2fd
+[  293.386049]  [<c148dfb6>] mesh_rx_path_sel_frame+0x5a/0x5d9
+[  293.386049]  [<c102667d>] ? update_curr+0x1cf/0x1d7
+[  293.386049]  [<c148b45a>] ieee80211_mesh_rx_queued_mgmt+0x60/0x67
+[  293.386049]  [<c147c374>] ieee80211_iface_work+0x1f0/0x258
+[  293.386049]  [<c1041139>] process_one_work+0x192/0x269
+[  293.386049]  [<c147c184>] ? ieee80211_teardown_sdata+0xaf/0xaf
+[  293.386049]  [<c10425b2>] worker_thread+0xf7/0x1fe
+[  293.386049]  [<c1025bc9>] ? complete+0x34/0x3e
+[  293.386049]  [<c10424bb>] ? manage_workers+0x164/0x164
+[  293.386049]  [<c1045415>] kthread+0x62/0x67
+[  293.386049]  [<c10453b3>] ? __init_kthread_worker+0x28/0x28
+[  293.386049]  [<c14b7ff6>] kernel_thread_helper+0x6/0xd
+</code></pre>

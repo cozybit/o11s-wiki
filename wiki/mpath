@@ -1,0 +1,55 @@
+<pre><code>
+# iw dev mesh mpath dump
+00:ff:f3:a0:24:bd 00:ff:f3:00:fe:25 mesh	51	25507	0	3341812736	100	0	0x4
+00:ff:f3:00:fe:25 00:ff:f3:00:fe:25 mesh	7	8577	0	3341812736	0	0	0x10
+00:ff:f3:a0:24:54 00:ff:f3:a0:24:54 mesh	0	14049	0	3341812736	0	0	0x10
+</code></pre>
+
+The columns, from left to right, are:
+
+h2. Destination MAC Address
+
+The destination for this Mesh Path. Direct paths have the same MAC address for the destination and next-hop.
+
+h2. Next-hop MAC address
+
+The next hop on the way to the destination.  Direct paths have the same MAC address for the destination and next-hop.
+
+h2. Device Name
+
+Network device (ex: "mesh").
+
+h2. DSN
+
+The Destination Sequence Number for this path.  The DSN is used to determine the 'freshnesss' of a node's path information.  For example, suppose a node receives a path response for a destination that is already in its path table.  If the path response has a higher DSN, it will replace the existing path because it will be considered fresher.
+
+h2. Air Time Link Metric
+
+A metric (or "cost") of taking the path.  Lower metrics are preferred and, given the choice of multiple paths, the stack will chose the least expensive (ie: the one with the lowest Air Time Link Metric).
+
+h2. Frame Queue Length
+
+Number of queued frames for this Mesh Path.
+
+h2. Expiration Time
+
+Time when this Mesh Path will expire, in jiffies.
+
+h2. Discovery Timeout
+
+Time remaining for path discovery (if this path is being discovered).
+
+h2. Discovery Retries
+
+Number of times discovery has been retried (if this path is being discovered).
+
+h2. Flags
+
+This is a bitmask consisting of the following state flags for this path:
+<pre><code>
+        MESH_PATH_ACTIVE =      BIT(0),
+        MESH_PATH_RESOLVING =   BIT(1), 
+        MESH_PATH_DSN_VALID =   BIT(2), 
+        MESH_PATH_FIXED =       BIT(3),
+        MESH_PATH_RESOLVED =    BIT(4),
+</code></pre>

@@ -1,0 +1,33 @@
+- TI, Intel (and of course Google) use (Sam Lefler's) autotest
+-- http://www.chromium.org/chromium-os/testing/testing-faq
+
+h2. device-controlled P2P offloads
+
+Goal is to have in firmware listen for off-channel P2P management frames and not doing that in wpa_supplicant.
+
+Jouni: offloading the entire functionality is hard, but at least time sensitive portions should be doable: extended listen timing, sending probe response, ...
+
+Discussion on roaming offloading.
+
+Partial scanning, aborting a scan.
+
+h2. non-mac80211 drivers
+
+Jouni: ath6k, hostapd works with packet sockets, no monitor interface anymore.
+
+libnl boated
+
+h2. DFS
+
+neratec: DFS implementations for proprietary drivers.  
+
+h2. Test sharing
+
+Autotest aginst cisco APs (using SNMP for configuring) or against openwrt APs.
+
+autotest for p2p? felix: ok
+hwsim? only used for development: Jouni, Luis and Johannes
+
+h2. wpa_supplicant plugin
+
+johannes: goal is to allow multiple applications to send requests to wpa_supplicant without confusing its internal state machines.

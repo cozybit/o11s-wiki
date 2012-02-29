@@ -1,0 +1,20 @@
+h2. distro11s-0.03
+
+distro11s-0.03 is just tested on the zotacs.
+
+h2. CHANGES
+
+* Only somewhat related to distro11s, wireshark SVN now has support for lots of mesh features.
+
+* authsae (er, meshd-nl80211) now has a unified configuration file and honors the channel that you specify.
+
+* meshkit now launches an AP when configured to do so.  So if you don't have a control network, you can at least connect to each distro11s node and login.
+
+* kernel supports mesh gateways advertised in root announcement (RANN) frames.
+
+* iw supports setting the RANN announcement interval and setting the gateway bit in the RANN announcements.
+
+h2. KNOWN ISSUES
+
+* Only one mesh gateway per mesh network is currently supported.
+

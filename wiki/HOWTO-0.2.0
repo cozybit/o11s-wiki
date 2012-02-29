@@ -1,0 +1,154 @@
+This page explains how to set up a mesh network using open80211s and a "Airlink 101 USB wireless adapter, Model:AWLL3026":http://www.airlink101.com/products/awll3026.html.
+
+h2. Getting all the pieces
+
+Each mesh node needs to be configured as follows:
+
+h3. The kernel
+Get a kernel including the open80211s stack:
+<pre><code>
+$ git clone git://o11s.org/open80211s.git
+</code></pre>
+Configure the kernel including the <code>mac80211</code> stack and <code>zd1211-rw</code> driver (<code>CONFIG_ZD1211RW</code>, <code>CONFIG_MAC80211</code>). Compile and install on your target.
+
+Make sure <code>/lib/modules/${KERNEL_VERSION}/build/include</code> points to your kernel headers. This is necessary for _pynl80211_ to work (see #18 if you want to help us with this tool).
+
+h3. pynl80211
+Get pynl80211:
+<pre><code>
+$ git-clone http://git.sipsolutions.net/pynl80211.git
+</code></pre>
+It is not necessary to compile it, but make sure that _wificonf.py_ is in your target's <code>$PATH</code>. Alternatively, you can "use iw":/cozybit/open80211s/wiki/wiki:Using_iw.
+
+h3. iproute2
+Get " iproute2-2.6.23":http://devresources.linux-foundation.org/dev/iproute2/download/iproute2-2.6.23.tar.bz2 and apply "the mesh support patch":http://o11s.org/patches/iproute2/iproute2-2.6.24-mesh-support-0.2.0.patch. Configure, compile, install on your target.
+
+h2. Testing
+* Boot several nodes with the compiled kernel and with _wificonf.py'' and ''ip_ userspace tools properly installed.
+* Add a new mesh interface for the zd1211-rw device to each node with _wificonf.sh_: 
+
+<pre><code>
+# MESH_IFACE_TYPE=7
+# wificonf.py new_interface 0 mesh $MESH_IFACE_TYPE
+</code></pre>
+
+ A new interface will be created:
+
+<pre><code>
+# ifconfig -a | grep mesh
+mesh      Link encap:Ethernet  HWaddr 00:18:39:14:48:B5  
+</code></pre>
+
+* All mesh interfaces start by default in channel 1. The channel can be
+   changed with 
+
+<pre><code>
+# iwconfig <mesh_iface> channel <channel>
+</code></pre>
+
+* You can assign a mesh id. This mesh id will be used in the mesh node beacons    when the interface is brought up. To do this with _wificonf.sh_, execute: 
+
+<pre><code>
+# wificonf.py set_mesh_cfg <mesh_iface> <mesh_id>
+</code></pre>
+
+ mesh_id is max 32 characters long. If no mesh id is set, the zero-length wildcard mesh id will be used.
+
+* Assign a same-subnet IP to the mesh interface in each node.
+
+<pre><code>
+# ifconfig <mesh_iface> <ip_addr>
+</code></pre>
+
+ For this tutorial, let's assume that our mesh nodes are assigned addresses in the <code>192.168.3.80/28</code> subnet.
+
+<pre><code>
+# ifconfig mesh 192.168.3.80
+</code></pre>
+
+* In the default configuration, mesh points will automatically attempt to creat peer links will all other mesh nodes with the same mesh ID.  You can examine which peer links have been established with the _ip mshplink_ command:
+
+<pre><code>
+192-168-3.80:~# ip mshplink
+00:11:a3:04:b1:0c ESTAB 65492 56250 mesh
+00:11:a3:04:b1:06 ESTAB 1341 14415 mesh
+00:11:a3:04:b0:85 ESTAB 48743 6007 mesh
+00:11:a3:04:b2:33 ESTAB 16421 28630 mesh
+</code></pre>
+
+* You should now be able to ping any node in the mesh.  After doing that you can use _ip_ again to inspect the path table and see which path was used to reach the ping destination.
+
+<pre><code>
+192-168-1-80:~# ping -c 2 192.168.3.87
+PING 192.168.3.87 (192.168.3.87) 56(84) bytes of data.
+64 bytes from 192.168.3.87: icmp_seq=1 ttl=64 time=36.6 ms
+64 bytes from 192.168.3.87: icmp_seq=2 ttl=64 time=11.0 ms
+
+192-168-1-80:~# arp 192.168.3.87
+Address                  HWtype  HWaddress           Flags Mask            Iface
+192.168.3.87             ether   00:11:A3:04:B0:85   C                     mesh
+
+192-168-1-80:~# ip mshpath show
+00:11:a3:04:b0:85 00:11:a3:04:b0:85 mesh 7 1 0x4 17642779 0 25 0
+00:11:a3:04:b2:17 00:11:a3:04:b2:33 mesh 7 2 0x4 17642780 0 25 0
+00:11:a3:04:b1:0c 00:11:a3:04:b1:0c mesh 0 1 0x20 17642779 0 0 0
+00:11:a3:04:b1:06 00:11:a3:04:b1:06 mesh 0 1 0x20 17642780 0 0 0
+00:11:a3:04:b2:33 00:11:a3:04:b2:33 mesh 0 1 0x20 17642780 0 0 0
+</code></pre>
+
+ In this example we can see that the destination was a single hop from the origin because the destination address (first column) matches the next hop address (second column).  On the example table we can see a multi-hop path to destination <code>00:11:a3:04:b2:17</code>.
+
+Et voilà! But keep reading for...
+
+h2. Advanced Tinkering
+
+* You can modify the mesh path table with these commands:
+  * _ip mshpath delete dev $MESH_DEV dst $DST_ADDR_ to delete a mesh path entry.
+  * _ip mshpath add dev $MESH_DEV dst $DST_ADDR next_hop $NEXTHOP_ADDR_ to force a specific network topology.
+* You can modify the mesh peer links table with these commands:
+  * _show_: same as no subcommand, list all the plinks.
+  * _add dev $MESH_DEV addr $HW_ADDR_: adds the peer to the table and tries to establish a link if the node is <code>auto_open_plinks</code> is set (see below).
+  * _del dev $MESH_DEV addr $HW_ADDR_: deletes a peer link from the peer table.
+  * _block dev $MESH_DEV addr $HW_ADDR_: prevents a peer link from being established with a given peer.  As a result, no traffic will be sent to or received from that peer.
+  * _open dev $MESH_DEV addr $HW_ADDR_: tries to establish a peer link with a peer already in the table and in <code>LISTEN</code> state.
+
+* Mount the debug filesystem, <code>debugfs</code>, and you'll be able to examine mesh statistics and modify configuration parameters:
+
+<pre><code>
+192-168-1-80:~# mount -t debugfs null /mnt
+
+192-168-1-80:~# # find /mnt/debugfs/ieee80211/phy0/netdev\:mesh/mesh_config
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/min_discovery_timeout
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/path_refresh_time
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWMPmaxPREQretries
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWM[[PnetDiameterTraversalTime]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWM[[PpreqMinInterval]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWM[[PactivePathTimeout]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshMaxPeerLinks]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/auto_open_plinks
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshTTL
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshHoldingTimeout]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshConfirmTimeout]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshRetryTimeout]]
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshMaxRetries]]
+
+192-168-1-80:~# find /mnt/debugfs/ieee80211/phy0/netdev\:mesh/mesh_stats
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/estab_plinks
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/dropped_frames_no_route
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/dropped_frames_ttl
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/fwded_frames
+</code></pre>
+
+For instance, to change the mesh TTL value for the interface (which currently defaults to 5) one would:
+
+<pre><code>
+192-168-1-80:~# cat /mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshTTL
+5
+192-168-1-80:~# echo 3 > /mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshTTL
+</code></pre>
+
+* "Patch":http://o11s.org/patches/wireshark/wireshark-0.99.7-mesh-support-0.2.0.patch "wireshark":http://www.wireshark.org/download/src/wireshark-0.99.7.tar.gz and start analyzing traffic.
+||[[Image(htdocs:shots/plink_open-wireshark.png,100%)]]||[[Image(htdocs:shots/preq-wireshark.png,100%)]]||
+"Comments?  Questions?  Praise?  Flames?":http://o11s.org/mailman/listinfo/devel

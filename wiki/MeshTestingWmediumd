@@ -1,0 +1,241 @@
+h2. Motivation
+
+If you are interested in contributing to or testing the mesh stack, you should consider using hwsim interfaces plus the wireless medium userspace tool.  Why?
+
+With <code>hwsim/wmediumd</code> you can create a multi node mesh network on a single host and simulate all sorts of topologies.  
+
+h2. Tutorial
+
+Let's start with a simple example.  Imagine that you want to see multi-hopping at work.  The simplest possible topology to achieve that would be a triangle:
+
+[[Image([[MeshTestingWmediumd]]:text3752-5.png,40%)]]
+
+To make it more interesting, let's also assume that you want to simulate different probability losses over different links.  For this example we will use 1.0 loss probability between nodes 0 and 2, 0.8 loss probability between nodes 1 and 2, and 0.0 (no losses) between nodes 0 and 1.  
+
+h3. 1. Patch your kernel
+
+Now the hwsim userspace extensions have been accepted in wireless-testing kernel development tree, if you plan to use a diferent kernel branch, and until the changes make it upstream, you'll need to patch your kernel with "this patch":https://patchwork.kernel.org/patch/838242/.
+
+It's also very useful to apply the send-to-self patch (http://www.ssi.bg/~ja/#loop) to be able to ping between the mesh nodes you'll create in the next step.  A version of the patch for 2.6.39-rc1 is available  "here":http://open80211s.com/files/0001-send-to-self-patch-2.6.39-rc1.patch
+
+
+h3. 2. Create 3 hwsim radios and create a mesh
+
+As root, do the following:
+
+<pre><code>
+modprobe mac80211
+modprobe mac80211_hwsim radios=3
+
+for i in `seq 0 3`
+do
+  iw phy phy$i interface add mesh$i type mp mesh_id bazooka
+  echo 1 > /proc/sys/net/ipv4/conf/mesh$i/loop
+  ifconfig mesh0 192.168.77.1$i
+done
+</code></pre>
+
+And confirm that nodes are all connected.
+
+<pre><code>
+iw dev mesh0 station dump | grep -e Sta -e plink
+Station 42:00:00:00:02:00 (on mesh0)
+	mesh plink:	ESTAB
+Station 42:00:00:00:01:00 (on mesh0)
+	mesh plink:	ESTAB
+</code></pre>
+
+h3. 3. Get <code>wmediumd</code>
+
+Clone it from "here":https://github.com/cozybit/wmediumd.
+Then compile it.
+
+h3. 4. Create a configuration file
+
+Now there are two methods available to create configurations files; directly, using wmediumd, or using wconfig, this new tool provides a visual and easier way to create and modify mesh simulation topologies for wireless medium daemon (wmediumd).
+
+We *recommend* the creation/edition of mesh topologies using the Wmediumd Configuration Tool "link]], but you can create your own configuration files by hand following this guide [[#a4.2.Usingwmediumd link]":/cozybit/open80211s/wiki/[#a4.1.Usingwconfig
+
+h3. 4.1. Using wconfig
+
+First of all check that your system has installed a Java Runtime Environment (JRE), if not you can download from Java website "download":http://www.java.com/getjava/index.jsp
+
+Once is completely installed you can get your copy of wconfig tool "here":https://github.com/jlopex/mac80211_hwsim/blob/master/wconfig/wconfig.jar?raw=true
+
+
+To launch the tool from command line, go to the folder where you downloaded the tool and execute next java command
+<pre><code>
+java -jar wconfig.jar
+</code></pre>
+
+A new window called 'Wmedimd config tool' should appear in your Desktop. 
+There are three main functionalities available on 'File' menu:
+
+[[Image([[MeshTestingWmediumd]]:file_menu.png,30%)]]
+
+* New file, discards all previous configuration on the tool, and provides an empty drawing area to work over it.
+* Load file, opens a File chooser dialog, opens desired configuration file, parses it and if it's correctly defined shows in the drawing area.
+* Save as, opens a File chooser dialog, and saves layout to this file using the wmediumd configuration file schema.
+
+*How to use it and generate a configuration file:*
+
+Check that the tool is running in Editing mode, go to Edit menu and set the combo box to Editing.
+
+[[Image([[MeshTestingWmediumd]]:edit_menu.2.png,30%)]]
+
+To create a new Node just do a click over the drawing area, auto ids are given starting from 0.
+
+[[Image([[MeshTestingWmediumd]]:one_node.png,30%)]]
+
+To create a second Node just do a new click over the drawing area.
+
+[[Image([[MeshTestingWmediumd]]:two_nodes.png,30%)]]
+
+To create a link between two nodes, just click on the start node and drag to the end node.
+
+[[Image([[MeshTestingWmediumd]]:bidirect_link_ok.png,30%)]]
+
+Bidirectional links are created by default.
+
+[[Image([[MeshTestingWmediumd]]:edge_prop.png,30%)]]
+
+To detach a bidirectional link in two directional links, just right-click over the link and check the Asymmetric box.
+
+[[Image([[MeshTestingWmediumd]]:assym_link.png,30%)]]
+
+* To convert a directional link into a bidirectional, as previous just right-click over the link and uncheck the Asymmetric box.
+* If you want to create directly a unidirectional link between nodes, just click shift key while dragging between both nodes.
+
+To edit link quality, do right click over desired link, and select "Edit link properties".
+
+[[Image([[MeshTestingWmediumd]]:edit_edge.png,30%)]]
+
+A new property dialog will appear to modify per rate loss probabilites.
+
+[[Image([[MeshTestingWmediumd]]:loss_prob.png,15%)]]
+
+Depending on the loss probabilities of each link the link dashes will be more or less separated.
+
+*ADVICE:* Mesh links where loss probabilities at all rates are set to 1.0 (100%), won't be shown on the visual tool.
+
+[[Image([[MeshTestingWmediumd]]:assym_link_prob.png,30%)]]
+
+To delete a Link/Node, just right-click over the item and select "Delete node" or "Delete link" for each case.
+
+[[Image([[MeshTestingWmediumd]]:delete_edge.png,30%)]]
+[[Image([[MeshTestingWmediumd]]:delete_vertex.png,30%)]]
+[[Image([[MeshTestingWmediumd]]:one_node.png,30%)]]
+
+The tool provides two additional running modes:
+
+* Edit menu -> Transforming, allows the user to transform the graph visualization.
+
+* Edit menu -> Picking, allows the to select any node and modify the graph distribution over the drawing area while maintaining all established items.
+
+
+h3. 4.2. Using wmediumd
+
+<pre><code>
+./wmediumd -o foo.cfg
+Output configuration file: foo.cfg
+How many interfaces are active?
+3
+#
+# wmediumd sample config file
+#
+
+ifaces : 
+{
+  count = 3;
+  ids = [ "42:00:00:00:00:00", "42:00:00:00:01:00", "42:00:00:00:02:00" ];
+};
+
+#
+# probability matrices are defined in a rowcentric way 
+# probability matrices are ordered from slower to fastest, check wmediumd documentation for more info
+#
+
+prob : 
+{
+  rates = 12;
+  matrix_list = (
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ],
+	[ -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0 ] );
+};
+New configuration successfully written to: foo.cfg
+</code></pre>
+
+Now edit foo.cfg.  For the chosen example topology, the probability matrix will be:
+
+<pre><code>
+prob : 
+{
+  rates = 12;
+  matrix_list = (
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ],
+	[ -1.0,  0.0, 1.0, 0.0, -1.0,  0.8, 1.0, 0.8, -1.0 ]
+	);
+};
+</code></pre>
+
+To understand this configuration, it helps to reformat the file a bit.  Each row corresponds to a different rate, from 1 Mbps to 54 Mbps, and corresponds to the following probability matrix:
+
+
+|| TX \ RX  || mesh0      || mesh1       || mesh2         ||
+||mesh0     ||   N/A (-1) ||  0.0        || 1.0           ||
+||mesh1     ||   0.0      ||  N/A (-1)   || 0.8           ||
+||mesh2     ||   1.0      ||   0.8       || N/A (-1)      ||
+
+So, traffic from mesh0 to mesh1 will be applied a ploss probability of 0.0, from mesh1 to mesh2 0.8 and so on.
+
+h3. 5. Test
+
+Ping from 0 to 2.
+<pre><code>
+# ping -I mesh0 192.168.77.12  -f -c 100
+PING 192.168.77.12 (192.168.77.12) from 192.168.77.10 mesh0: 56(84) bytes of data.
+............................................................................................        
+--- 192.168.40.30 ping statistics ---
+100 packets transmitted, 8 received, 92% packet loss, time 1326ms
+rtt min/avg/max/mdev = 4210.147/4244.457/4285.209/25.063 ms, pipe 9, ipg/ewma 13.398/4253.676 ms
+</code></pre>
+
+Note that direct link loss probability between 0 and 2 is 1.0 but we still see frames flowing between the two nodes.  (The probability loss above is 92%).
+
+The first entry in the path table below shows that that traffic is actually re-routed via node 1:  
+
+<pre><code>
+# iw dev mesh0 mpath dump
+DEST ADDR         NEXT HOP          IFACE	SN	METRIC	QLEN	EXPTIME		DTIM	DRET	FLAGS
+42:00:00:00:02:00 42:00:00:00:01:00 mesh0	66	304	0	572662306	400	2	0x4
+42:00:00:00:01:00 42:00:00:00:01:00 mesh0	101	152	0	572662306	100	0	0x10
+</code></pre>
+  
+
+h2. More Advanced Uses
+
+Here we've shown a very basic topology.  <code>wmediumd</code> can be used for larger networks and can simulate more realistic channel properties like asymmetric links and different loss probabilities depending in the rate.  For instance, one can easily simulate links with increasing losses at higher rates (a typical behavior in links with low interferences) or link losses to total frame transmission time (i.e. simulate a congested channel).
+
+h2. Acknowledgements
+
+<code>wmediumd</code> was written by "Javier Lopez":https://github.com/jlopex in collaboration with "cozybit folks":http://www.cozybit.com.

@@ -1,0 +1,14 @@
+This release adds support for authenticated mesh networks (using SAE) by extending nl80211, mac80211, wpa_supplicant and the SAE reference implementation written by Dan Harkins.
+
+h2. Components
+* "open80211s":http://o11s.org/trac/browse?p=open80211s.git;a=commitdiff;h=331c972eca8b0594699ca49f8ee5b3db22e4ce9d
+* "modified wpa_supplicant":https://github.com/cozybit/hostap-sae.
+* "HOWTO 0.3.0":/cozybit/open80211s/wiki/wiki:HOWTO-0.3.0
+
+h2. New features
+* nl80211 can notify userspace of new peer candidates. 
+* Similarly, mesh IEs can now flow between kernel and userspace.
+* wpa_supplicant authenticates peer candidates and manages the lifetime of peer stations in the kernel
+
+h2. Known issues
+* Note that this release only adds support for authentication, not encryption. This feature is scheduled for a future release.

@@ -1,0 +1,97 @@
+h2. Build openwrt with custom kernel and wpa_supplicant
+
+1. Point to our kernel git tree
+<pre><code>
+make menuconfig
+
+Advanced configuration options (for developers)
+-> Enter git repository to clone
+-> git://o11s.org/open80211s.git
+
+Kernel Modules
+-> Wireless Drivers
+  -> mac80211
+
+Networking
+-> wpa_supplicant
+  -> choose openssl as TLS provider
+</code></pre>
+
+Look at <code>./include/kernel-defaults.mk</code> for other external kernel configuration options (local tree, git local reference, etc.)
+
+If you've built your toolchain for another kernel, you'll have to rebuild it:
+
+<pre><code>
+make toolchain/clean
+make target/linux/clean
+make
+</code></pre>
+
+UPDATE: I could ONLY get an external kernel to build under a fresh checkout of openwrt.
+
+2.  Enable mesh in the kernel
+<pre><code>
+make kernel_menuconfig
+ networking support -> wireless -> generic IEEE 802.11 stack ->
+     Enable mac80211 mesh networking (pre-802.11s) support
+</code></pre>
+
+3.  Include elliptic curves support in openssl
+
+Edit package/openssl/Makefile 
+<pre><code>
+- OPENSSL_OPTIONS:= shared no-err no-ec no-hw no-threads zlib-dynamic no-sse2
++ OPENSSL_OPTIONS:= shared no-err no-hw no-threads zlib-dynamic no-sse2
+</code></pre>
+
+4.  Use our wpa_supplicant fork
+
+Clean up previous hostapd tarfile, if any.
+<pre><code>
+make package/hostapd/clean V=99
+rm dl/hostapd-*
+</code></pre>
+
+Edit package/hostapd/Makefile
+<pre><code>
++PKG_SOURCE_URL:=git://github.com/cozybit/hostap-sae.git
+</code></pre>
+
+Edit package/hostapd/files/wpa_supplicant-full.config
+<pre><code>
+CONFIG_MESH_RSN=y
+CONFIG_DRIVER_NL80211=y
+</code></pre>
+
+*HACK:* I don't know how to make openwrt to pull from git.  Workaround: overwrite the downloade file.
+
+<pre><code>
+make package/hostapd
+ls dl/hostap*
+  dl/hostapd-20100705.tar.bz2
+cp -r /path/to/your/hostapd hostapd-20100705
+tar tvjf hostapd-20100705.tar.bz hostapd-20100705 --exclude .git
+cp hostapd-20100705.tar.bz dl/hostapd-20100705.tar.bz2
+make package/hostapd/clean
+make package/hostapd/compile V=99
+</code></pre>
+
+If you trust your hostapd to be newer than the openwrt release, wipe out all its patches:
+<pre><code>
+rm -f ./package/hostapd/patches/*
+</code></pre>
+
+h2. Other useful openwrt recipes
+1. Create your network config file under <trunk>
+files/etc/config/network
+<pre><code>
+config interface loopback
+        option ifname   lo
+        option proto    static
+        option ipaddr   127.0.0.1
+        option netmask  255.0.0.0
+
+config interface lan
+        option ifname   eth0
+        option proto    dhcp
+</code></pre>

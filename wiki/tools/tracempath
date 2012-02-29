@@ -1,0 +1,62 @@
+h2. The Script
+
+<pre><code>
+#! /bin/bash
+# 
+# traceroute equivalent for open80211s mesh network
+#
+# Requires: key-based ssh access to all intermediate nodes. 
+# Assumes: class C IP address space.  Probably this script would perform very
+# poorly in larger subnets.
+# Assumes: the mesh interface has the same name (e.g. mesh0) in all the mesh
+# nodes.
+#
+# Javier Cardona <javier@cozybit.com>
+
+MESH_IF=$1
+DEST_MAC=$2
+DEST_IP=`arp -n | grep "\<${DEST_MAC}\>" | awk '{ print $1 }'`
+LOCAL_NET=`echo ${DEST_IP} | sed -e 's/\.[^.]*$//'`.0
+USERNAME=root
+SSH_KEY=/root/.ssh/id_intra_rsa
+
+function show_usage()
+{
+        echo "$0 <mesh interface> <destination mac>"
+}
+
+[ "$2" == "" ] && { show_usage; exit 1; }
+
+ping -c 1 ${DEST_IP} &>/dev/null || { exit -1; echo destination unreachable; }
+NEXT_HOP=`iw dev ${MESH_IF} mpath get ${DEST_MAC} | grep ${MESH_IF} | awk '{ print $2 }'`
+[ "${NEXT_HOP}" != "" ] || { exit -1; echo can\'t find next hop; }
+
+# Slow and cluky way to do a reverse ARP lookup on this subnet
+# XXX: Assuming class C address below
+fping -c 1 -g -q ${LOCAL_NET}/24  2&> /dev/null
+NEXT_HOP_IP=`arp -n | grep ${NEXT_HOP} | awk '{ print $1 }'`
+
+echo "meshpath to ${DEST_MAC}:"
+
+i=0
+while [ "${NEXT_HOP}" != _ -a "${NEXT_HOP_IP}" != _ ]
+do
+        let $((i++))
+        echo $i:${NEXT_HOP}
+        [ "${NEXT_HOP}" == "${DEST_MAC}" ] &&  exit 0
+        NEXT_HOP=`ssh ${USERNAME}@${NEXT_HOP_IP} -i ${SSH_KEY} iw dev ${MESH_IF} mpath get ${DEST_MAC} | grep ${MESH_IF} | awk '{ print $2 }'`
+        [ "${NEXT_HOP}" != "" ] || break
+        NEXT_HOP_IP=`arp -n | grep ${NEXT_HOP} | awk '{ print $1 }'`
+done
+exit 1
+</code></pre>
+
+h2. Example output
+
+<pre><code>
+./tracempath.sh mesh0 42:00:00:00:03:00
+meshpath to 42:00:00:00:03:00:
+1:42:00:00:00:01:00
+2:42:00:00:00:02:00
+3:42:00:00:00:03:00
+</code></pre>

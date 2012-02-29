@@ -1,0 +1,289 @@
+*Note:* this HOWTO is for Release 0.2.1.  Please see the "latest HOWTO":http://o11s.org/trac/wiki/HOWTO for up-to-date documentation.
+
+This page explains how to set up a mesh network using open80211s and a "Airlink 101 USB wireless adapter, Model:AWLL3026":http://www.airlink101.com/products/awll3026.html or "IOGEAR GWU523":http://www.iogear.com/product/GWU523/.
+
+
+
+h2. Getting all the pieces
+
+
+
+Each mesh node needs to be configured as follows:
+
+
+
+h3. The kernel
+
+Get a kernel including the open80211s stack:
+
+<pre><code>
+
+$ git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
+
+</code></pre>
+
+Configure the kernel including the <code>mac80211</code> stack with mesh capabilities and <code>zd1211-rw</code> driver (<code>CONFIG_ZD1211RW</code> (or other appropriate driver), <code>CONFIG_MAC80211</code>, <code>CONFIG_MAC80211_MESH</code>). Compile and install on your target.  For example, here are "instructions for Ubuntu":/cozybit/open80211s/wiki/wiki:Ubuntu.  
+
+
+
+The o11s patches have are now included in compat-wireless so you have the option of using "compat-wireless":http://linuxwireless.org/en/users/Download instead of building the kernel.
+
+
+
+h2. iw
+
+
+
+Follow the instructions at "iw documentation page":http://linuxwireless.org/en/users/Documentation/iw/, ~~but apply the appropriate "mesh support patch":http://o11s.org/patches/iw/iw-b612d-mesh-support-0.2.1.patch available before compiling~~.
+
+
+
+*Update:* the mesh support patch has been included in iw git repository, so it is no longer necessary to apply it separately.
+
+
+
+h2. Testing
+
+* Boot several nodes with the compiled kernel and with _iw_ userspace tools properly installed.
+
+
+
+* Choose a mesh id.  The mesh id will be used in the mesh node beacons, and only mesh points with the same mesh id will be able to communicate to each other. The mesh id is a maximum of 32 bytes long.
+
+
+
+* Add a new mesh interface for the zd1211-rw device to each node.
+
+
+
+<pre><code>
+
+# iw dev wmaster0 interface add mesh type mp mesh_id $MESH_ID
+
+</code></pre>
+
+
+
+ A new interface will be created:
+
+
+
+<pre><code>
+
+# ifconfig -a | grep mesh
+
+mesh      Link encap:Ethernet  HWaddr 00:18:39:14:48:B5  
+
+</code></pre>
+
+
+
+*Note:* depending on your Linux distribution, you may see "a slightly different name":http://linuxwireless.org/en/users/Download#Knownissues for the mesh interface.
+
+
+
+* All mesh interfaces start by default in channel 1. The channel can be
+
+   changed with 
+
+
+
+<pre><code>
+
+# iwconfig <mesh_iface> channel <channel>
+
+</code></pre>
+
+
+
+* Assign a same-subnet IP to the mesh interface in each node.
+
+
+
+<pre><code>
+
+# ifconfig <mesh_iface> <ip_addr>
+
+</code></pre>
+
+
+
+ For this tutorial, let's assume that our mesh nodes are assigned addresses in the <code>192.168.3.80/28</code> subnet.
+
+
+
+<pre><code>
+
+# ifconfig mesh 192.168.3.80
+
+</code></pre>
+
+
+
+* In the default configuration, mesh points will automatically attempt to create peer links will all other mesh nodes with the same mesh ID.  You can examine which peer links have been established with the _iw dev mesh station dump_ command:
+
+
+
+<pre><code>
+
+192-168-3.80:~# iw dev mesh station dump
+
+00:11:a3:04:af:ed mesh  792     65228   168     20860   36108   ESTAB
+
+00:11:a3:04:b1:06 mesh  204     65744   168     25545   34728   ESTAB
+
+00:11:a3:04:b0:85 mesh  496     65770   168     43006   53475   ESTAB
+
+00:11:a3:04:b1:05 mesh  304     65749   168     65287   62867   ESTAB
+
+00:11:a3:04:b1:0c mesh  1008    66099   484     33584   11108   ESTAB
+
+</code></pre>
+
+
+
+* You should now be able to ping any node in the mesh.  After doing that you can use _ip_ again to inspect the path table and see which path was used to reach the ping destination.
+
+
+
+<pre><code>
+
+192-168-1-80:~# ping -c 2 192.168.3.87
+
+PING 192.168.3.87 (192.168.3.87) 56(84) bytes of data.
+
+64 bytes from 192.168.3.87: icmp_seq=1 ttl=64 time=36.6 ms
+
+64 bytes from 192.168.3.87: icmp_seq=2 ttl=64 time=11.0 ms
+
+
+
+192-168-1-80:~# arp 192.168.3.87
+
+Address                  HWtype  HWaddress           Flags Mask            Iface
+
+192.168.3.87             ether   00:11:A3:04:B0:85   C                     mesh
+
+
+
+192-168-1-80:~# iw dev mesh mpath dump
+
+00:11:a3:04:b0:85 00:11:a3:04:b0:85 mesh 7 1 0x4 17642779 0 25 0
+
+00:11:a3:04:b2:17 00:11:a3:04:b2:33 mesh 7 2 0x4 17642780 0 25 0
+
+00:11:a3:04:b1:0c 00:11:a3:04:b1:0c mesh 0 1 0x20 17642779 0 0 0
+
+00:11:a3:04:b1:06 00:11:a3:04:b1:06 mesh 0 1 0x20 17642780 0 0 0
+
+00:11:a3:04:b2:33 00:11:a3:04:b2:33 mesh 0 1 0x20 17642780 0 0 0
+
+</code></pre>
+
+
+
+ In this example we can see that the destination was a single hop from the origin because the destination address (first column) matches the next hop address (second column).  On the example table we can see a multi-hop path to destination <code>00:11:a3:04:b2:17</code>.
+
+
+
+Et voilà! But keep reading for...
+
+
+
+h2. Advanced Tinkering
+
+
+
+* You can modify the mesh path table with these commands:
+
+  * _iw dev mesh mpath $DST_ADDR del_: to delete a mesh path entry.
+
+  * _iw dev mesh mpath $DST_ADDR add next_hop $NEXTHOP_ADDR_ to force a specific network topology.
+
+* You can modify the mesh peer links table with these commands:
+
+  * _iw dev mesh station dump_: list all the plinks.
+
+  * _iw dev mesh station $HW_ADDR set plink_action [open|block]_: trigers a specific peer link stablishment process or blocks a specific peer link.
+
+  * _iw dev mesh station del $HW_ADDR_: deletes a peer link from the peer table.
+
+
+
+* Mount the debug filesystem, <code>debugfs</code>, and you'll be able to examine mesh statistics and modify configuration parameters:
+
+<pre><code>
+
+192-168-1-80:~# mount -t debugfs null /mnt
+
+
+
+192-168-1-80:~# # find /mnt/debugfs/ieee80211/phy0/netdev\:mesh/mesh_config
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/min_discovery_timeout
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/path_refresh_time
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWMPmaxPREQretries
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWM[[PnetDiameterTraversalTime]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWM[[PpreqMinInterval]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshHWM[[PactivePathTimeout]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshMaxPeerLinks]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/auto_open_plinks
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshTTL
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshHoldingTimeout]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshConfirmTimeout]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshRetryTimeout]]
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11[[MeshMaxRetries]]
+
+
+
+192-168-1-80:~# find /mnt/debugfs/ieee80211/phy0/netdev\:mesh/mesh_stats
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/estab_plinks
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/dropped_frames_no_route
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/dropped_frames_ttl
+
+/mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_stats/fwded_frames
+
+</code></pre>
+
+
+
+For instance, to change the mesh TTL value for the interface (which currently defaults to 5) one would:
+
+
+
+<pre><code>
+
+192-168-1-80:~# cat /mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshTTL
+
+5
+
+192-168-1-80:~# echo 3 > /mnt/debugfs/ieee80211/phy0/netdev:mesh/mesh_config/dot11MeshTTL
+
+</code></pre>
+
+
+
+* "Patch":http://o11s.org/patches/wireshark/wireshark-0.99.7-mesh-support-0.2.0.patch "wireshark":http://www.wireshark.org/download/src/wireshark-0.99.7.tar.gz and start analyzing traffic.
+
+||[[Image(htdocs:shots/plink_open-wireshark.png,100%)]]||[[Image(htdocs:shots/preq-wireshark.png,100%)]]||
+
+"Comments?  Questions?  Praise?  Flames?":http://o11s.org/mailman/listinfo/devel

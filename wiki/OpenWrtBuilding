@@ -1,0 +1,83 @@
+OpenWrt can be built for your favorite router hardware with o11s support.  You will need to build trunk with the following instructions.
+
+h2. Get compat-wireless with the latest o11s patches
+
+You can "build it yourself":/cozybit/open80211s/wiki/Compat[[WirelessBuilding]] or download it from "here":http://o11s.org/files/compat-wireless-2.6-o11s-0.4.2.tar.bz2. 
+
+h2. Configure Openwrt
+
+<pre><code>
+  svn co svn://svn.openwrt.org/openwrt/trunk openwrt
+  cd openwrt
+  ./scripts/feeds update -a
+  ./scripts/feeds install -a
+  make menuconfig
+</code></pre>
+
+h3. Choose Hardware
+
+e.g. for RouterBoard:
+
+* Target System => (Atheros AR71xx/AR7240/AR913x/AR934x)
+* Target Profile (Ubiquiti RouterStation)
+* Kernel Modules => Wireless Drivers => kmod-ath9k
+
+Save and exit.
+
+h2. Openwrt Patches
+
+Create the directory openwrt/dl and copy the compat-wireless-2.6.tar.bz2 into it
+
+<pre><code>
+$ mkdir openwrt/dl
+$ cp compat-wireless-2.6.tar.bz2 openwrt/dl/
+</code></pre>
+
+Apply patches to sync the mac80211 package with changes in the compat-wireless package.  These apply clean to SVN revision 28079.
+
+* http://o11s.org/files/o11s-openwrt-r28087.diff
+
+<pre><code>
+$ cd openwrt/
+openwrt$ svn update -r 28079
+openwrt$ wget http://o11s.org/files/o11s-openwrt-r28087.diff
+openwrt$ patch -p0 < o11s-openwrt-r28087.diff
+</code></pre>
+
+
+h2. Build
+
+<pre><code>
+make V=99
+</code></pre>
+
+Target binaries are in e.g. bin/ar71xx/
+
+You want the squashfs version.
+
+Refer to OpenWrt wiki for specific install instructions via tftp or bootloader when loading a bare system.  If the system already has OpenWrt on it, then you can SCP/wget the sysupgrade image into /tmp then:
+
+<pre><code>
+sysupgrade openwrt-ar71xx-generic-ubnt-rs-squashfs-sysupgrade.bin
+</code></pre>
+
+h2. authsae Authentication Daemon
+
+A package for this has been submitted to OpenWrt, but is not included in OpenWrt SVN at time of writing.
+
+See https://lists.openwrt.org/pipermail/openwrt-devel/2011-August/012021.html
+
+Hosted here also: http://o11s.org/files/authsae.patch
+
+h2. Driver and Config notes
+
+[[OpenWrt]] needs further work to integrate o11s in its user interface and to correctly configure the interface.  In particular, the ath9k needs hardware encryption turned off, and the system may configure the radio in a way where it does not work at all.  Therefore, the following command sequence is suggested (put in your own values):
+
+<pre><code>
+rmmod ath9k
+insmod /lib/modules/2.6.39.4/ath9k.ko nohwcrypt=1
+iw dev wlan0 interface add mesh0 type mp
+iw dev mesh0 set channel 6
+ifconfig mesh0 192.168.33.99
+iw dev mesh0 mesh join openwrt-mesh
+</code></pre>

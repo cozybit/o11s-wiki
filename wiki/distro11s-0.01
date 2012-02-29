@@ -1,0 +1,35 @@
+h2. distro11s-0.01
+
+distro11s is a quick and dirty, ephemeral linux distribution that contains all you need to get started as a mesh hacker. Here are the relevant changes:
+
+h2. CHANGES
+
+* See the README for more details on what distro11s can do for you. Pay close attention to the step where you configure distro11s to build for your desired target.
+
+* qemu and zotac "boards" are supported.
+
+* Automated fetching of all source packages with ./scripts/fetch.sh
+
+* Automated build of all source packages with ./scritps/build.sh
+
+* Force a specific package to rebuild with <code>FORCE_BUILD=1 ./scripts/mypackage.sh</code>. Handy.
+
+* Launch qemu easily by invoking board/qemu/qemu.sh
+
+* Run the hwsim test suite by launching qemu and invoking /usr/local/share/hwsim_tests/runall.sh
+
+h2. KNOWN ISSUES
+
+* Many libraries are in /usr/local/lib. But that's not in the default ld path. So you must export LD_LIBRARY_PATH=/usr/local/lib for anything to work.
+
+* The provisioning script doesn't work with gnu-fdisk. If you have gnu fdisk, remove it like so: $ sudo apt-get remove gnu-fdisk
+
+* After booting qemu, if you expect the hwsim tests to run, you must create an ssh key with no password and add it to /root's authorized_keys:
+
+<pre><code>
+$ ssh-keygen $ cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+</code></pre>
+
+* The host name is not set correctly for any target. To alter it, you must edit /etc/hostname and reboot.
+
+* The release build configures a static IP for eth0. If it is not the static IP that you want, you must edit /etc/network/interfaces.

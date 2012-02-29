@@ -1,0 +1,8 @@
+<pre><code>
+LOOPDEV=/dev/loop0
+MOUNTPT=/mnt/qemu-rootfs
+
+sudo umount $MOUNTPT
+sudo losetup -s /dev/loop0 ~/qemu/rootfs-qemu.img
+sudo fsck -C -p /dev/loop0
+</code></pre>

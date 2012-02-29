@@ -1,0 +1,65 @@
+This page explains how to set up a simple static mesh network using open80211s and a "Airlink 101 USB wireless adapter":http://www.airlink101.com/products/awll3026.html.
+
+The is an *early development release*.  It may fry your microwave.  You have been warned.
+
+h2. Getting all the pieces
+
+h3. The kernel
+Get a kernel including the open80211s stack:
+<pre><code>
+$ git clone git://o11s.org/open80211s.git
+</code></pre>
+Configure the kernel including the <code>mac80211</code> stack and <code>zd1211-rw-mac80211</code> driver (<code>CONFIG_ZD1211RW_MAC80211</code>, <code>CONFIG_MAC80211</code>). Compile and install. 
+
+Make sure <code>/lib/modules/${KERNEL_VERSION}/build/include</code> points to your kernel headers. This is necessary for pynl80211 to work.
+h3. pynl80211
+Get pynl80211:
+<pre><code>
+$ git-clone http://git.sipsolutions.net/pynl80211.git
+</code></pre>
+It is not necessary to compile it, but make sure that <code>wificonf.py</code> is in your <code>$PATH</code>.
+h3. iproute2
+Get "iproute2-2.6.23":http://developer.osdl.org/dev/iproute2/download/iproute2-2.6.23.tar.bz2 and apply "the mesh support patch":http://o11s.org/patches/iproute2/iproute2-2.6.23-mesh-support-0.1.1.patch. Configure, compile, install.
+
+h2. Testing
+* Boot several nodes with the compiled kernel and tools.
+* Add a new mesh interface for the zd1211-rw device to each node with the pynl80211 utility: 
+<pre><code>
+# MESH_IFACE_TYPE=7
+# wificonf.py new_interface 0 mesh $MESH_IFACE_TYPE
+</code></pre>
+   A new interface will be created:
+<pre><code>
+# ifconfig -a | grep mesh
+mesh      Link encap:Ethernet  HWaddr 00:18:39:14:48:B5  
+</code></pre>
+
+* You can assign a mesh id. This mesh id will be use in the mesh node beacons    when the interface is brought up. Todo this with the pynl80211 utility, execute: 
+<pre><code>
+# wificonf.py set_mesh_cfg <mesh_iface> <mesh_id>
+</code></pre>
+   mesh_id is max 32 characters long. If no mesh id is set, the zero-length
+   wildcard mesh id will be used.
+
+* Assign a same-subnet IP to the mesh interface in each node.
+<pre><code>
+# ifconfig <mesh_iface> <ip_addr>
+</code></pre>
+
+* Nodes will be able to communicate if there is an entry for the destination node in their path tables. Create a network topology with the modified iproute2:
+<pre><code>
+# ip mshpath add dst <mac_dst> next_hop <mac_nexthop> dev <mesh_iface>. 
+</code></pre>
+It is also possible to show and clear the mesh path table with the <code>show</code> and <code>delete</code> subcommands.
+* All mesh interfaces start by default in channel 1. The channel can be
+   changed with 
+<pre><code>
+# iwconfig <mesh_iface> channel <channel>
+</code></pre>
+* If the paths are correct (i.e. they connect two nodes both ways) and the nodes are on the same channel, it will be possible to ping the nodes or perform any other kind of data transfer, for example, an ssh session. Note that since broadcast packets are not forwarded yet, the two nodes must be within range or it will necessary to bypass the arp resolution by adding the MAC and IP addresses to the arp table on each node with:
+<pre><code>
+# arp -s <remote_ip_addr> <remote_mac_addr>
+</code></pre>
+
+h2. Problems? Don't Panic!
+If you are corageous enough to test open80211s at this early stage of development but run into problems, please join the "open80211s devel mailing list":http://o11s.org/mailman/listinfo/devel and we will be glad to help you.

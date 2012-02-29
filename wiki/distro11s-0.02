@@ -1,0 +1,27 @@
+h2. distro11s release 0.02
+
+distro11s release 0.02 is ready. It's only tests on zotac boards. If you have access to cozybit's network, here's how to fetch and use the binary release:
+
+* Download it from obelix.local:/var/releases/distro11s-bin-zotac-0.02.tar.gz, untar it, and cd distro11s-0.02.
+
+* Consider editing distro11s.conf to customize your deploy. Specifically, you may wish to change DISTRO11S_HOSTNAME to something like "myzotac". Note that not all of these variables will be applied by the installer—this is really the build config. For example, the root password can not be altered by editing this file.
+
+* Create the USB installer by cd’ing to distro11s-0.02 and running <code>./scripts/provisioning.sh -d /dev/sdX -i</code>. Expect this step to take a good few minutes.
+
+* While the USB installer is cooking, set up an OPEN access point with SSID meshkit-ctl and IP subnet 192.168.3.X. The zotacs will come up with static IP addresses 192.168.3.9X, so ensure that the DHCP server does not dole these addresses out.
+
+* Gather all of the zotac nodes that you intend to provision. Boot each one with the /dev/sdX USB installer plugged in. Be sure to halt the boot process with F11 and select to boot from the USB drive. Provisioning will happen automatically and the zotac will reboot when it is cooked.
+
+* Each subsequent zotac that you provision will be given the base hostname with an integer appended (e.g., zotac-0, zotac-1, etc). Unfortunately, there is not beeps or flashes to indicate when the process is done. But they will automatically join the meshkit-ctl network. Also, they use mdns to resolve their hostnames, so you can ping them (e.g., ping zotac-0.local). You can also ssh into them.
+
+* The zotacs will automatically form a mesh using meshkit. In this release, they start an open mesh with mesh ID "meshkit". See packages/meshkit/README for details and configuration info.
+
+h2. CHANGES
+
+* Package version info captured in rootfs under /etc/distro11s-versions
+
+* o11s kernel uses packets with proper (e.g., v12.0) format
+
+* distro11s has USB installer. Tested with zotac
+
+* Introducing meshkit: the simple script-based mesh network manager

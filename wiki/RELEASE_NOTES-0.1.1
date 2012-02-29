@@ -1,0 +1,23 @@
+*Note:* this page is for Release 0.1.1.  Please see the "latest HOWTO":http://o11s.org/trac/wiki/HOWTO for up-to-date documentation.
+
+This is the first public release of the open80211s stack, that lays out the
+infrastructure on which the project will be built. 
+
+h2. Components
+* "o80211s stack 0.1.1":http://o11s.org/trac/browse?p=open80211s.git;a=commit;h=e163ca1db471e4a80cf090d9fe10f265b3438774.
+* "o8011s iproute2-2.6.23 mesh support patch 0.1.1":http://o11s.org/patches/iproute2/iproute2-2.6.23-mesh-support-0.1.1.patch.
+    * Tested with "iproute2-2.6.23":http://developer.osdl.org/dev/iproute2/download/iproute2-2.6.23.tar.bz2.
+* "o80211s wireshark-0.99.6 mesh support patch 0.1.1":http://o11s.org/patches/wireshark/wireshark-0.99.6-mesh-support-0.1.1.patch.
+   * Tested with "Wireshark 0.99.6":http://www.wireshark.org/download/src/wireshark-0.99.6.tar.gz
+* "HOWTO 0.1.1":/cozybit/open80211s/wiki/wiki:HOWTO-0.1.1
+
+h2. Features
+* Unicast forwarding using fixed path tables, with mesh ttl decrementing.
+* Path table modifiable from user space (add new paths, show table, delete all paths).
+* Mesh statistics via /proc/net/mesh.
+* zd1211-rw device support.
+* Mesh beaconing support.
+* Mesh ID modifiable from userspace.
+
+h2. Known issues
+* Broadcast forwarding is not implemented.

@@ -1,0 +1,29 @@
+Last release introduced SAE authentication (contributed by Dan Harkins, open80211s' Chief Security Advisor).  This release adds encryption support for data and management frames as well as broadcast management frame protection.  
+
+Temporal keys are derived (MTK, MGTK) and a ciphersuite is negotiated via the Authenticated Mesh Peering Exchange protocol.  AMPE frames are self-protected and authenticated using AES-SIV (also contributed by Dan).
+
+The end result is a robust mesh network that won't be disrupted by any means other than a full scale microwave oven attack.
+
+h2. Components
+* "open80211s":http://o11s.org/trac/browse?p=open80211s.git;a=shortlog;h=o11s-0.4.0
+* "authsae":https://github.com/cozybit/authsae.
+* "HOWTO 0.4.0":/cozybit/open80211s/wiki/wiki:HOWTO-0.4.0
+
+h2. New features
+
+* Super-duper security: protected and authenticated peering frames, encrypted unicast and broadcast data frames, encrypted unicast path selection frames, tamper-proof broadcast management frames.
+
+* Minor but also relevant:  frame format updates, fixed a few locking bugs and replaced some early-draft element identifiers with ANA-approved ones
+
+h2. Bonus
+* Thanks to SAE authentication, open80211s is immune to offline dictionary attacks.  This is relevant now that "WPA-PSK can be cracked for less than $2":http://it.slashdot.org/story/11/01/13/2024237/Amazon-EC2-Enables-Cheap-Brute-Force-Attacks!
+
+h2. Notes
+
+* As usual, and until the 11s standard is ratified, we don't support backward compatibility.  If you decide to try this release you will need to update all the nodes in your mesh.
+
+h2. Thanks 
+
+* Did we thank Dan Harkins yet?  He made this release possible first by designing SAE and second by making his reference implementation available to the world.
+
+* Also thanks for the continuing sponsorship of "Google":http://lmgtfy.com/?q=google and to our new sponsor "Manna Energy":http://www.mannaenergy.org.

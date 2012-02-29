@@ -1,0 +1,28 @@
+h2. What is distro11s?
+
+distro11s is a quick and dirty ephemeral roll-your-own linux distribution based
+on Debian that adds packages and a suitable kernel to play with mesh
+networking.  It is "ephemeral" because all of the work is meant to be pushed
+upstream regularly.  So most folks who want to use mesh will pull their code
+from upstream, not from us.  But we need a coherent way to track and test the
+latest and greatest.
+
+h2. Where can get the code?
+
+<code>git clone git://github.com/cozybit/distro11s.git</code>
+
+h2. Where can I learn more?
+
+Check out the code and have a look at the README
+
+h2. What are the distro11s releases all about?
+
+As we improve the kernel and related userspace packages that make up a mesh system, we release distro11s to represent snapshots of our internal progress.  The best way to get the code, however, is to just work from git HEAD of the distro11s tree.
+
+h2. Releases
+
+"distro11s-0.01":/cozybit/open80211s/wiki/wiki:distro11s-0.01
+
+"distro11s-0.02":/cozybit/open80211s/wiki/wiki:distro11s-0.02
+
+"distro11s-0.03":/cozybit/open80211s/wiki/wiki:distro11s-0.03

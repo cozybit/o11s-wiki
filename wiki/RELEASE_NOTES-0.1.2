@@ -1,0 +1,25 @@
+*Note:* this page is for Release 0.1.2.  Please see the "latest HOWTO":http://o11s.org/trac/wiki/HOWTO for up-to-date documentation.
+
+This is the second release of the open80211s stack, including mesh peer link management.
+
+h2. Components
+* "o80211s stack 0.1.2":http://o11s.org/trac/browse?p=open80211s.git;a=tag;h=55840ec5044584481ae85508fe2168cfaadc6bdd
+* "o8011s iproute2-2.6.23 mesh support patch 0.1.2":http://o11s.org/patches/iproute2/iproute2-2.6.23-mesh-support-0.1.1.patch.
+    * Tested with "iproute2-2.6.23":http://developer.osdl.org/dev/iproute2/download/iproute2-2.6.23.tar.bz2.
+* "o80211s wireshark-0.99.6 mesh support patch 0.1.1":http://o11s.org/patches/wireshark/wireshark-0.99.6-mesh-support-0.1.1.patch.
+   * Tested with "Wireshark 0.99.6":http://www.wireshark.org/download/src/wireshark-0.99.6.tar.gz
+* "HOWTO 0.1.2":/cozybit/open80211s/wiki/wiki:HOWTO-0.1.2
+
+h2. New features
+* Mesh peer link establishment support (no security).
+* Nodes may be configured to automatically establish peer links, or only on user request.
+* Mesh statistics through debugfs.
+* Mesh config knobs through debugfs, including general mesh TTL and mesh peer link timeouts.
+* Traffic filtering on mesh interfaces according with mesh peer link state.
+* Support to blacklist / whitelist nodes for testing.
+* Pending queue: frames for unresolved destinations will be queued and transmitted when a path to their destination is discovered. The implementation is experimental and does not implement frame expiration yet, but it does implement a per-destination pending frames limit.
+* "bissell lift off revolution turbo":http://astore.amazon.com/bissellstore-20/detail/B000ASDV5I
+
+h2. Known issues
+* Broadcast forwarding is deactivated until a table of recently multicast frames is implemented, to avoid traffic explosion.
+* A 'CLOSE' mesh peer link management frame will cause the closing of links on 'ESTABLISHED' state even if the link ids do not match. This allows to avoid a dead lock without having to allow multiple peer links per peer.

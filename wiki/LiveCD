@@ -1,0 +1,67 @@
+The "cozybit":http://www.cozybit.com/ Wireless Mesh Live CD is a modified "Ubuntu 8.04":http://www.ubuntu.com/ Live CD featuring o11s mesh networking included in the 2.6.26-rc6 kernel.  Use the CD to try out mesh networking on your laptop or desktop PC!
+
+# insert the CD into your CD-ROM drive and reboot your PC
+# select "English" from the language menu
+# select "try Ubuntu without making changes to your computer" and wait for the system to boot to the Gnome desktop.
+
+*Note*: if you are having trouble booting, press F6 after step 2 above to edit the command line.  Change the word <code>splash</code> to <code>nosplash</code> as the boot splashscreen causes problems on some PCs.
+
+h2. WLAN hardware
+
+The Wireless Mesh CD works with WLAN interfaces supported by:
+* the "B43 driver":http://linuxwireless.org/en/users/Drivers/b43
+* the "zd1211rw driver":http://linuxwireless.org/en/users/Drivers/zd1211rw
+
+Once you have booted, plug in your WLAN hardware (if applicable), open a terminal from the Applications->Accessories menu, and identify your hardware and its interfaces.
+
+h2. Bringing up a Mesh Point interface
+
+For this example, we will assume that 'wmaster0' is the 'master' interface for your B43 or zd1211rw device.  Start by killing Network Manager:
+
+<pre><code>
+sudo killall [[NetworkManager]]
+</code></pre>
+
+Bring down any other network interface derived from the same master interface.
+
+<pre><code>
+sudo ifconfig wlan0 down
+</code></pre>
+
+Create a mesh point interface named 'mesh0':
+
+<pre><code>
+sudo iw dev wmaster0 interface add mesh0 type mp mesh_id <any string>
+</code></pre>
+
+The new interface, 'mesh0', should now be available.  The default channel is 1, use iwconfig to change it if needed.  For example:
+
+<pre><code>
+sudo iwconfig msh0 channel 6
+</code></pre>
+
+Assign an IP address, for example:
+
+<pre><code>
+sudo ifconfig mesh0 192.168.0.10
+</code></pre>
+
+or use "Zeroconf":http://en.wikipedia.org/wiki/Zeroconf to assign a random "Link Local":http://en.wikipedia.org/wiki/Link-local_address address:
+
+<pre><code>
+sudo zcip -i mesh0
+</code></pre>
+
+h2. Try out the mesh
+
+Use additional Wireless Mesh Live CDs to boot up additional PCs and repeat the above steps (use unique IP addresses on the same subnet or 'zcip').  Now check that the PCs can ping each other over the mesh.  For example:
+
+<pre><code>
+ping -I mesh0 192.168.0.11
+</code></pre>
+
+Mesh points with the same <code>mesh_id</code> and within the same subnet should be able to <code>ping</code> each other."bissell proheat":http://astore.amazon.com/bissellcleaner-20?_encoding=UTF8&node=111
+
+Now it's time to play a game: open Jump'n'Bump from the Applications->Games menu and start a 'server' on one of your PCs (configure it for up to 3 additional players given the number of people and PCs you have available).  Open the game on the other PCs and join the server.  Run <code>man jumpnbump</code> from a terminal to read about the game and its options.
+"Bissell 1425-1":http://astore.amazon.com/bissellstore-20/detail/B000VW7AH8
+"bissell belts":http://astore.amazon.com/bissellcleaner-20?_encoding=UTF8&node=121

@@ -1,0 +1,18 @@
+This is the fourth release of the open80211s stack, and the first one that has 
+been accepted in the "wireless-testing kernel repository":http://git.kernel.org/?p=linux/kernel/git/linville/wireless-testing.git;a=summary.
+
+h2. Components
+* "o80211s stack RELEASE 0.2.1":http://o11s.org/trac/browse?p=open80211s.git;a=commit;h=1c692df20f87d773cf6448fa0eca3dc9ae3acd92
+* "o80211s iw b612d mesh support patch 0.2.1":http://o11s.org/patches/iw/iw-b612d-mesh-support-0.2.1.patch.
+* "o80211s wireshark-0.99.7 mesh support patch 0.2.0":http://o11s.org/patches/wireshark/wireshark-0.99.7-mesh-support-0.2.0.patch, same as previous release.
+   * Tested with "0.99.7":http://www.wireshark.org/download/src/all-versions/wireshark-0.99.7.tar.gz
+* "HOWTO 0.2.1":/cozybit/open80211s/wiki/wiki:HOWTO-0.2.1
+
+h2. New features
+* Per-neighbor rate adaptation.
+* Airtime link metric support for HWMP.
+* Support for scanning mesh networks.
+* Clean interfaces for beaconing.
+
+h2. Known issues
+* Multiple links per peer are not supported.  To avoid deadlocks that would result from this limitation, a 'CLOSE' mesh peer link management frame will close all links 'ESTABLISHED' with the sender even if _link IDs_ do not match. 

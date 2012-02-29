@@ -1,0 +1,16 @@
+Halt qemu, then:
+<pre><code>
+e2fsck -f /path/to/rootfs-qemu.img
+resize2fs /path/to/rootfs-qemu.img 1G
+losetup -c /dev/loop0
+
+# Check partition table size
+fdisk -l /dev/loop0
+
+Disk /dev/loop0: 1073 MB, 1073741824 bytes
+(...)
+
+# Check file size
+ls -al /path/to/rootfs-qemu.img
+-rw-rw-rw- 1 root root 1073741824 2011-02-03 12:59 rootfs-qemu.img
+</code></pre>

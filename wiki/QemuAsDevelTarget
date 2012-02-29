@@ -1,0 +1,245 @@
+h2. Overview
+
+[[Image(wiki:[[QemuAsDevelTarget]]:sae-qemu-devel.png)]]
+
+h2. Booting a kernel in qemu
+
+h3. 1. Install qemu
+<pre><code>
+ apt-get install qemu
+</code></pre>
+
+h3. 2. Create a loop device that will become your target's rootfs
+<pre><code>
+dd if=/dev/zero of=rootfs.img bs=1024 count=1048576
+losetup /dev/loop0 rootfs.img
+mkfs -t ext3 -m 1 -v /dev/loop0
+mkdir /mnt/qemu-rootfs
+mount -t ext3 /dev/loop0 /mnt/qemu-rootfs
+</code></pre>
+Don't worry if you don't know what size to choose.  If the suggested 1GB is not sufficient you can always [[ResizeYourQemuImage]].
+
+h3. 3. Install debian on it
+<pre><code>
+sudo debootstrap sid /mnt/qemu-rootfs http://ftp.debian.org/debian
+</code></pre>
+
+3.1 Install useful packages
+<pre><code>
+chroot /mnt/qemu-rootfs /bin/bash
+apt-get install iw vim sudo make gcc sshfs libnl2 tcpdump
+</code></pre>
+
+h3. 4. Configure a couple of time saving tricks (on target):
+
+4.1 autologin as root via serial console (i.e. the terminal console from which you invoke qemu):
+
+Remove password from root account:
+
+/etc/shadow
+<pre><code>
+- root:x:14483:0:99999:7:::
++ root::14483:0:99999:7:::
+</code></pre>
+
+Enable serial console with auto login
+
+/etc/inittab
+<pre><code>
+- #T0:23:respawn:/sbin/getty -L ttyS0 9600 vt100
++ T0:23:respawn:/sbin/getty -n -l /bin/autologin.sh -L ttyS0 38400 linux
+</code></pre>
+
+Create /bin/autologin.sh as:
+<pre><code>
+#!/bin/sh
+exec /bin/login -f root
+</code></pre>
+
+And make it executable
+<pre><code>
+chmod 700 /bin/autologin.sh
+</code></pre>
+
+
+h3. 5. Compile a wireless-testing kernel
+<pre><code>
+git clone \
+ git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing
+cd wireless-testing
+make defconfig
+# For mesh development you want to edit your .config and enable
+# CONFIG_MAC80211_MESH=y
+# CONFIG_MAC80211_HWSIM=m
+#
+# and maybe some debugging
+# CONFIG_CFG80211_DEBUGFS=y
+# CONFIG_MAC80211_DEBUGFS=y
+# CONFIG_MAC80211_DEBUG_MENU=y
+# CONFIG_MAC80211_VERBOSE_MPL_DEBUG=y
+# CONFIG_MAC80211_VERBOSE_MHWMP_DEBUG=y
+#
+# for sshfs support, enable
+# CONFIG_FUSE_FS=y
+make -j 2
+</code></pre>
+
+h3. 6. Copy kernel modules to your rootfs
+<pre><code>
+INSTALL_MOD_PATH=/mnt/qemu-rootfs make modules_install
+</code></pre>
+
+From time to time you'll have to install new modules, etc.  This is a useful convenience script for that:
+
+<pre><code>
+LOOPDEV=/dev/loop0
+MNTPOINT=/mnt/qemu-rootfs
+
+sudo losetup $LOOPDEV || sudo losetup /dev/loop0 /path/to/your/rootfs.img
+sudo killall qemu
+sudo mount -t ext3 $LOOPDEV $MNTPOINT
+sudo INSTALL_MOD_PATH=$MNTPOINT make modules_install
+sudo umount $MNTPOINT
+</code></pre>
+
+h3. 7. Unmount your rootfs
+<pre><code>
+umount /mnt/qemu-rootfs
+</code></pre>
+
+h3. 8. Launch qemu
+<pre><code>
+qemu -kernel arch/i386/boot/bzImage \
+  -hda rootfs.img \
+  -append "root=/dev/sda console=ttyS0" -nographic
+</code></pre>
+
+You should be greeted by a login prompt:
+<pre><code>
+Debian GNU/Linux 6.0 phooey ttyS0
+
+phooey login: 
+</code></pre>
+
+h3. 9. Setup networking between guest and host
+
+"is a bit convoluted but avoids running qemu as root.  Also, throughout the rest of the doc, the host's tap interface address will be assumed to be 192.168.55.1 and the guest address 192.168.55.2":/cozybit/open80211s/wiki/This
+
+*On your host edit the following:*
+
+/etc/qemu-ifup:
+<pre><code>
+#!/bin/sh
+
+/sbin/ifconfig $1 192.168.55.1 up
+</code></pre>
+
+/etc/qemu-ifdown:
+<pre><code>
+# leave this blank.  We'll do the cleanup in our wrapper script
+</code></pre>
+
+And create this wrapper script to invoke qemu
+<pre><code>
+#! /bin/bash
+
+IFNAME=`sudo tunctl -u javier -b`
+sudo /etc/qemu-ifup $IFNAME
+qemu -kernel ~/dev/wireless-testing/arch/i386/boot/bzImage  \
+  -hda ~/qemu/rootfs.img \
+  -append "root=/dev/sda combined_mode=ide console=ttyS0" \
+  -nographic -net nic,model=e1000 \
+  -net tap,ifname=$IFNAME,script=no
+tunctl -d $IFNAME
+</code></pre>
+
+To get tunctl, install the user mode linux utilities package:
+<pre><code>
+sudo apt-get install uml-utilities
+</code></pre>
+
+*On your guest edit the following:*
+
+/etc/network/interfaces
+<pre><code>
+auto eth0
+iface eth0 inet static
+ address 192.168.55.2
+ netmask 255.255.255.0
+</code></pre>
+
+remove udev net rules, we'll be using one interface per guest:
+<pre><code>
+rm /etc/udev/rules.d/70-persistent-net.rules
+</code></pre>
+
+Now boot and you should be able to ping from guest to host and vice versa.
+
+h3. 10. Set up sshfs
+
+Generate a passphrase-less private key on guest and copy public key to host to automate login.  Could be pretier, but adding the line below to /etc/rc.local on guest works.
+
+<pre><code>
+sshfs -o allow_other -o idmap=user javier@192.168.55.1:/path/to/remote/dir \
+  /local/mount/point
+</code></pre>
+
+h2. Differences with MacOS/FreeBSD
+
+1. losetup does not exist.  just create the filesystem and double-click to mount it
+
+2. <code>sudo port install e2fsprogs</code> to get mkfs
+
+TODO: Finish this section
+
+h2. More Tasks
+
+[[LibnlOnQemu]]
+[[QemuKernelDebug]]
+
+h2. Troubleshooting
+
+h3. Can't enable kernel virtualization (on Thinkpad T400)
+Symptom: In dmesg, kvm: disabled by bios
+
+Solution: enable VT and VT-d in CPU page of bios, then *power cycle* your machine.
+
+h3. Disk Write errors
+
+Symptom:
+<pre><code>
+[   37.498636] ata1.00: exception Emask 0x0 SAct 0x0 SErr 0x0 action 0x0
+</code></pre>
+
+Solution: Make sure rootfs.img has the appropriate readwrite permissions, duh
+
+h3. udev can't write to /run
+<pre><code>
+/etc/init.d/udev: 1: cannot create /run/udev//root-link-rule: Read-only file system
+</code></pre>
+That also causes other failures like no serial console.  
+Deleting /run on your guest filesystem did the trick.
+
+h3. udev spawns too many net.agents which never exit, slowing down my qemu
+we don't need them anyway, edit /lib/udev/net.agent like so:
+<pre><code>
+
+-        ppp*|ippp*|isdn*|plip*|lo|irda*|ipsec*)
++        ppp*|ippp*|isdn*|plip*|lo|irda*|ipsec*|mesh*)
+
+</code></pre>
+to disable spawning of net.agents for mesh interfaces.
+If the net.agents still persist after that edit, add 'exit 1' near the beginning of /lib/udev/net.agent:
+<pre><code>
+
+         ./lib/udev/hotplug.functions
+
++        exit 1
+
+         if [ -z "$INTERFACE" ]; then
+
+</code></pre>
+h2. Links
+http://www.cryptosystem.org/archives/2005/03/kernel-development-with-qemu
+http://www.coreboot.org/QEMU_Build_Tutorial#Creating_a_hard_disk_image
+http://www.walkernews.net/2007/07/01/create-linux-loopback-file-system-on-disk-file/  

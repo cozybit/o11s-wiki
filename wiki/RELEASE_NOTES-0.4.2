@@ -1,0 +1,55 @@
+First release after the IEEE - SA Standards Board ratified 802.11s (Sep 9th) for
+publication.  Hurray!
+  
+This release does not add any major feature but many small improvements and bug fixes:
+
+h2. kernel
+
+* Include QoS header on all mesh frames.    
+* Experimental HT support. Please note that while MCS rates are observed, we are still working on improving throughput.  Also, authsae requires a workaround in which you have to set the  channel type through iw prior to bringing up your mesh interface.  This work was greatly inspired by Alexander Simon's work on IBSS HT support.
+* Several bug fixes:
+   * Defer tranmission of mesh path errors
+   * Check if mesh frame is in RMC after decrypt
+   * Avoid filling up mesh preq queue with redundant requests
+   * Stop forwarding mesh traffic when tx queues are full
+
+(Thanks to Pedro Larbig for reporting some of these bugs)
+
+h2. authsae
+
+* Set HT capabilites for new station.
+* Parse HT IEs.
+* Read HT info from wiphy.
+* Let user set channel type (ht mode).
+* Peering frame format + other nits.
+* bugfixes
+
+h2. wireshark
+
+All our patches are upstream.  You can use the latest wireshark development version to parse mesh traffic.
+
+h2. distro11s
+
+We've continued working in our minimal distro. Lots customizations, improvements and bug fixes to make mesh development and deployment very fast.
+
+As always, you can find this "here":https://github.com/cozybit/distro11s. Please send comments, feedback, and questions to our "distro11s mailing list":/cozybit/open80211s/wiki/mailto:distro11s@cozybit.com.
+
+h2. Release components
+
+You can fetch individual components from the following repositories:
+
+* "kernel":https://www.github.com/cozybit/open80211s
+* "authsae":https://github.com/cozybit/authsae
+* "iw":http://git.sipsolutions.net/?p=iw.git
+
+Or have "distro11s":https://github.com/cozybit/distro11s fetch them for you.
+
+h2. Notes
+
+* Until now we have not supported backward compatibility.  If you decide to try this release you will need to update all the nodes in your mesh.  But we expect future releases to be backward compatible with this one.
+
+h2. Thanks 
+ 
+* Thanks to those submitting bug reports (and even "fixed":http://open80211s.com/pipermail/devel/2011-August/000880.html!) via our mailing list.
+
+* Thanks for the continuing sponsorship of "Google":http://lmgtfy.com/?q=google and "Manna Energy":http://www.mannaenergy.org. 

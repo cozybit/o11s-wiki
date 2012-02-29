@@ -1,0 +1,47 @@
+This is the first release after the 11s draft (v12.0) has been approved by the IEEE 802 Executive Committee.  What this means is that there will be no more technical changes until the draft becomes a Standard this September.  No more coding a changing spec... yay!
+  
+We've been busy on a number of fronts:
+
+h2. kernel
+
+* Gate Announcements.  Mesh nodes that have access to external networks can now advertise themselves to other mesh nodes.  The standard provides several options on how to do this, we've opted to use RANNs.  The advantage of that is that there is no additional management overhead.  The price we pay is that gates must also be root nodes (i.e. proactively routed from other mesh nodes).  
+
+* Numerous updates to conform to the latest draft: update peering and path selection frame formats, fix format of information elements, etc.
+
+* Several bug fixes.  See commit logs for details.
+
+h2. authsae
+
+* Consolidated and improved config files.
+
+h2. wireshark
+
+* Patches upstream to parse v12 mesh frames.
+
+h2. distro11s
+
+* We put together a minimal distro that builds mesh nodes for qemu and for one of our reference testbed nodes.  You can find this "here":https://github.com/cozybit/distro11s. As this is still a work in progress, please send comments, feedback, and questions to our "distro11s mailing list":/cozybit/open80211s/wiki/mailto:distro11s@cozybit.com.
+
+h2. Project site
+
+* After a massive spam attack we've tightened our wiki's security and re-enabled our ticket tracking system.  We no longer accept self-registrations to the project site but if you want to contribute please send an e-mail to mailto:devel@lists.open80211s.org and we'll grant you access.
+
+h2. Release components
+
+You can fetch individual components from the following repositories:
+
+* "kernel":https://www.github.com/cozybit/open80211s
+* "authsae":https://github.com/cozybit/authsae
+* "iw":http://git.sipsolutions.net/?p=iw.git note: you will need "this patch":https://raw.github.com/cozybit/distro11s/2ecfdeb7bbf8bde615b95b5cba5f275c628aee98/patches/iw/0002-support-for-setting-RANN-interval-and-mesh-gate.patch to create a mesh gate.
+
+Or have "distro11s":https://github.com/cozybit/distro11s fetch them for you.
+
+h2. Notes
+
+* As usual, and until the 11s standard is ratified, we don't support backward compatibility.  If you decide to try this release you will need to update all the nodes in your mesh.
+
+h2. Thanks 
+ 
+* Thanks to those submitting bug reports (and even "fixes":http://open80211s.com/pipermail/devel/2011-August/000860.html!) via our mailing list.
+
+* Thanks for the continuing sponsorship of "Google":http://lmgtfy.com/?q=google and "Manna Energy":http://www.mannaenergy.org.  By the way, did you see their "cool press release video?":http://www.geekswf.org/video.html

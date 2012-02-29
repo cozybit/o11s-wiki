@@ -1,0 +1,3467 @@
+<pre><code>
+#!html
+
+<h3 class="sectionHead">Comparison Draft 802.11s with <span 
+class="cmtt-10x-x-109">open80211s</span></h3>
+<!--l. 699--><p class="noindent" >The following table analyzes each section of the 802.11s draft specification with
+respect to the <span 
+class="cmtt-10x-x-109">open80211s </span>implementation. References to section numbers,
+figures or tables in the 802.11s draft are identified by the following shorthand
+format: <span 
+class="cmsy-10x-x-109">{</span><span 
+class="cmmi-10x-x-109">s,t,f</span><span 
+class="cmsy-10x-x-109">}</span><img 
+src="o11s-report1x.png" alt="":":/cozybit/open80211s/wiki/version"  class="left" align="middle"> <span 
+class="cmmi-10x-x-109">&#x003C;number&#x003E;</span>. For instance, s3.03:7.0 would represent
+Section 7.0 of the 802.11s draft version 3.03. When no version number is
+explicitely given, the current version 7.03 is implied. Related section elements
+have been grouped and abbreviated as <span 
+class="cmmi-10x-x-109">N </span><span 
+class="cmsy-10x-x-109">-</span><span 
+class="cmmi-10x-x-109">M </span>(all sections between <span 
+class="cmmi-10x-x-109">N </span>and <span 
+class="cmmi-10x-x-109">M</span>) or
+<span 
+class="cmmi-10x-x-109">P,Q,S </span>(sections <span 
+class="cmmi-10x-x-109">P</span>, <span 
+class="cmmi-10x-x-109">Q </span>and <span 
+class="cmmi-10x-x-109">S</span>).
+<!--l. 708--><p class="indent" >   The version of <span 
+class="cmtt-10x-x-109">open80211s </span>used in this review is the one from the
+<a 
+href="http://git.kernel.org/?p=linux/kernel/git/linville/wireless-testing.git;a=summary;" >wireless-testing repository</a>, commit id <span 
+class="cmtt-10x-x-109">da615f8f710975c90c</span>.
+<!--l. 712--><p class="indent" >   The <span 
+class="cmbx-10x-x-109">&#8220;Implemented?&#8221; </span>column provides the implementation status of each
+section and is one of the following: Yes, No, Inherited, Partially or Don&#8217;t Know.
+Inherited means that the section was not implemented as part of the
+<span 
+class="cmtt-10x-x-109">open80211s </span>effort but that it is provided by mac80211. The rest are
+self-explanatory.
+<div class="center" 
+>
+<!--l. 718--><p class="noindent" >
+<a 
+ id="x1-35001r2"></a><!--l. 721--><div class="longtable"> <table id="TBL-5" class="longtable" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-5-1g"><col 
+id="TBL-5-1"></colgroup><colgroup id="TBL-5-2g"><col 
+id="TBL-5-2"></colgroup><colgroup id="TBL-5-3g"><col 
+id="TBL-5-3"></colgroup>
+                                                                     
+
+                                                                     
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-1-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-1-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-2-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-3-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-4-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-4-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-5-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-6-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-6-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-7-"><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-1"  
+class="td11"> <div class="multicolumn"  style="white-space:nowrap; text-align:center;"><span 
+class="cmbx-10x-x-109">Section</span></div> </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-2"  
+class="td11"> <div class="multicolumn"  style="white-space:nowrap; text-align:center;"><span 
+class="cmbx-10x-x-109">Implemented?</span></div> </td><td  style="white-space:nowrap; text-align:center;" id="TBL-5-7-3"  
+class="td11"> <div class="multicolumn"  style="white-space:nowrap; text-align:center;"><span 
+class="cmbx-10x-x-109">Notes</span></div>
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-8-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-8-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-9-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-9-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-10-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-10-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-11-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-11-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-12-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-12-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-13-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-13-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-14-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-14-1"  
+class="td11">         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-15-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-15-1"  
+class="td11">          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-15-2"  
+class="td11">                 </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-15-3"  
+class="td11"></td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-61-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-61-1"  
+class="td11"> s7.1.3.1.3   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-61-2"  
+class="td11"> Yes             </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-61-3"  
+class="td11">
+ <!--l. 738--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-62-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-62-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-63-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-63-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-64-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-64-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-65-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-65-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-66-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-66-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-67-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-67-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-68-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-68-1"  
+class="td11"> s7.1.3.1.6   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-68-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-68-3"  
+class="td11">
+ <!--l. 740--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-69-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-69-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-70-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-70-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-71-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-71-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-72-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-72-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-73-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-73-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-74-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-74-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-75-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-75-1"  
+class="td11"> s7.1.3.1.7   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-75-2"  
+class="td11"> Inherited      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-75-3"  
+class="td11">
+ <!--l. 742--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-76-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-76-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-77-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-77-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-78-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-78-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-79-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-79-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-80-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-80-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-81-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-81-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-82-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-82-1"  
+class="td11"> s7.1.3.1.8   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-82-2"  
+class="td11"> Inherited      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-82-3"  
+class="td11">
+ <!--l. 744--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-83-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-83-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-84-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-84-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-85-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-85-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-86-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-86-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-87-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-87-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-88-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-88-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-89-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-89-1"  
+class="td11"> s7.1.3.5.0a  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-89-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-89-3"  
+class="td11">
+ <!--l. 745--><p class="noindent" >Mesh Control Present needs
+  to be added.                     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-90-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-90-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-91-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-91-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-92-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-92-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-93-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-93-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-94-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-94-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-95-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-95-1"  
+class="td11">           </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-96-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-96-1"  
+class="td11"> s7.1.3.5.2   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-96-2"  
+class="td11"> Don&#8217;t Know  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-96-3"  
+class="td11">
+ <!--l. 748--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-97-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-97-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-98-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-98-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-99-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-99-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-100-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-100-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-101-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-101-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-102-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-102-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-103-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-103-1"  
+class="td11"> s7.1.3.5.3   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-103-2"  
+class="td11"> Don&#8217;t Know  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-103-3"  
+class="td11">
+ <!--l. 750--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-104-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-104-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-105-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-105-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-106-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-106-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-107-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-107-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-108-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-108-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-109-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-109-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-110-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-110-1"  
+class="td11"> s7.1.3.5.9   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-110-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-110-3"  
+class="td11">
+ <!--l. 751--><p class="noindent" >Mesh Control Present needs
+  to be added.                     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-111-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-111-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-112-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-112-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-113-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-113-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-114-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-114-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-115-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-115-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-116-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-116-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-117-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-117-1"  
+class="td11"> s7.1.3.5.10  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-117-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-117-3"  
+class="td11">
+ <!--l. 753--><p class="noindent" >No Power Management.      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-118-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-118-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-119-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-119-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-120-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-120-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-121-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-121-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-122-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-122-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-123-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-123-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-124-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-124-1"  
+class="td11"> s7.1.3.5.11  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-124-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-124-3"  
+class="td11">
+ <!--l. 755--><p class="noindent" >No Power Management.      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-125-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-125-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-126-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-126-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-127-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-127-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-128-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-128-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-129-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-129-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-130-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-130-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-131-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-131-1"  
+class="td11"> s7.1.3.6.3   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-131-2"  
+class="td11"> Yes             </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-131-3"  
+class="td11">
+ <!--l. 757--><p class="noindent" >Mesh                   Control
+  Address extesion now uses 3
+  addresses instead of 3.        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-132-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-132-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-133-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-133-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-134-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-134-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-135-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-135-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-136-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-136-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-137-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-137-1"  
+class="td11">           </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-138-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-138-1"  
+class="td11"> s7.2.2.1     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-138-2"  
+class="td11"> Yes             </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-138-3"  
+class="td11">
+ <!--l. 760--><p class="noindent" >Mesh                   Control
+  Address extesion now uses
+  3 addresses instead of 3. No
+  Protected Frames.              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-139-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-139-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-140-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-140-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-141-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-141-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-142-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-142-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-143-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-143-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-144-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-144-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-145-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-145-1"  
+class="td11"> s7.2.2.2     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-145-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-145-3"  
+class="td11">
+ <!--l. 763--><p class="noindent" >Might be inherited at some
+  point.                              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-146-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-146-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-147-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-147-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-148-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-148-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-149-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-149-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-150-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-150-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-151-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-151-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-152-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-152-1"  
+class="td11"> s7.2.3.0a    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-152-2"  
+class="td11"> Partially      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-152-3"  
+class="td11">
+ <!--l. 765--><p class="noindent" >No      Multihop      Action
+  Frames.                           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-153-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-153-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-154-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-154-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-155-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-155-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-156-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-156-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-157-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-157-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-158-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-158-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-159-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-159-1"  
+class="td11"> s7.2.3.1     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-159-2"  
+class="td11"> Partially      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-159-3"  
+class="td11">
+ <!--l. 767--><p class="noindent" >No     TIM.     No     QoS
+  Capability.                       </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-160-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-160-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-161-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-161-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-162-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-162-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-163-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-163-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-164-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-164-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-165-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-165-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-166-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-166-1"  
+class="td11"> s7.2.3.6     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-166-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-166-3"  
+class="td11">
+ <!--l. 769--><p class="noindent" >No Authentication Suite for
+  mesh.                              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-167-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-167-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-168-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-168-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-169-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-169-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-170-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-170-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-171-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-171-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-172-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-172-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-173-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-173-1"  
+class="td11"> s7.2.3.8     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-173-2"  
+class="td11"> Yes             </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-173-3"  
+class="td11">
+ <!--l. 772--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-174-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-174-1"  
+class="td11">
+                                                                     
+
+                                                                     
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-175-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-175-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-176-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-176-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-177-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-177-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-178-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-178-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-179-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-179-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-180-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-180-1"  
+class="td11"> s7.2.3.9     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-180-2"  
+class="td11"> Partially      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-180-3"  
+class="td11">
+ <!--l. 773--><p class="noindent" >No  Mesh  Awake  Window,
+  Beacon Timing, MCCAOP
+  Advertisements
+  nor  Mesh  Channel  Switch
+  Parameters.                      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-181-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-181-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-182-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-182-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-183-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-183-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-184-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-184-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-185-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-185-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-186-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-186-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-187-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-187-1"  
+class="td11"> s7.2.3.10    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-187-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-187-3"  
+class="td11">
+ <!--l. 776--><p class="noindent" >No SAE authentication.      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-188-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-188-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-189-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-189-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-190-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-190-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-191-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-191-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-192-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-192-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-193-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-193-1"  
+class="td11">           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-194-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-194-1"  
+class="td11"> s7.3.1.1     </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-194-2"  
+class="td11"> No              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-194-3"  
+class="td11">
+ <!--l. 778--><p class="noindent" >No SAE authentication.      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-195-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-195-1"  
+class="td11">           </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-196-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-196-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-197-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-197-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-198-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-198-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-199-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-199-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-200-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-200-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-201-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-201-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-202-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-202-1"  
+class="td11"> s7.3.1.4            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-202-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-202-3"  
+class="td11">
+ <!--l. 781--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-203-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-203-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-204-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-204-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-205-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-205-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-206-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-206-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-207-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-207-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-208-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-208-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-209-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-209-1"  
+class="td11"> s7.3.1.7            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-209-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-209-3"  
+class="td11">
+ <!--l. 783--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-210-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-210-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-211-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-211-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-212-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-212-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-213-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-213-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-214-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-214-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-215-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-215-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-216-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-216-1"  
+class="td11"> s7.3.1.8            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-216-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-216-3"  
+class="td11">
+ <!--l. 785--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-217-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-217-1"  
+class="td11">
+                                                                     
+
+                                                                     
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-218-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-218-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-219-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-219-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-220-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-220-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-221-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-221-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-222-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-222-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-223-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-223-1"  
+class="td11"> s7.3.1.9            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-223-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-223-3"  
+class="td11">
+ <!--l. 786--><p class="noindent" >No SAE.                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-224-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-224-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-225-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-225-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-226-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-226-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-227-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-227-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-228-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-228-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-229-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-229-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-230-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-230-1"  
+class="td11"> s7.3.1.11           </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-230-2"  
+class="td11"> Partly     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-230-3"  
+class="td11">
+ <!--l. 788--><p class="noindent" >Category codes need to be
+  updated  to  recent  changes
+  in the draft.                      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-231-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-231-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-232-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-232-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-233-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-233-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-234-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-234-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-235-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-235-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-236-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-236-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-237-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-237-1"  
+class="td11"> s7.3.1.35-40       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-237-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-237-3"  
+class="td11">
+ <!--l. 791--><p class="noindent" >No SAE.                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-238-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-238-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-239-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-239-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-240-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-240-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-241-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-241-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-242-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-242-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-243-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-243-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-244-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-244-1"  
+class="td11"> s7.3.2.1            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-244-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-244-3"  
+class="td11">
+ <!--l. 794--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-245-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-245-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-246-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-246-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-247-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-247-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-248-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-248-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-249-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-249-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-250-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-250-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-251-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-251-1"  
+class="td11"> s7.3.2.1            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-251-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-251-3"  
+class="td11">
+ <!--l. 796--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-252-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-252-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-253-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-253-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-254-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-254-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-255-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-255-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-256-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-256-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-257-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-257-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-258-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-258-1"  
+class="td11"> s7.3.2.6            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-258-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-258-3"  
+class="td11">
+ <!--l. 797--><p class="noindent" >No Power Save modes.        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-259-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-259-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-260-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-260-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-261-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-261-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-262-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-262-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-263-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-263-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-264-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-264-1"  
+class="td11">               </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-265-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-265-1"  
+class="td11"> s7.3.2.13           </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-265-2"  
+class="td11"> Inherited  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-265-3"  
+class="td11">
+ <!--l. 800--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-266-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-266-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-267-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-267-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-268-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-268-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-269-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-269-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-270-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-270-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-271-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-271-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-272-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-272-1"  
+class="td11"> s7.3.2.20-20a,53  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-272-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-272-3"  
+class="td11">
+ <!--l. 801--><p class="noindent" >Channel      Switch      not
+  implemented.                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-273-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-273-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-274-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-274-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-275-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-275-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-276-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-276-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-277-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-277-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-278-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-278-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-279-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-279-1"  
+class="td11"> s7.3.2.25.2,4      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-279-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-279-3"  
+class="td11">
+ <!--l. 803--><p class="noindent" >No SAE.                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-280-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-280-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-281-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-281-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-282-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-282-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-283-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-283-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-284-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-284-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-285-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-285-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-286-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-286-1"  
+class="td11"> s7.3.2.56.2,5      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-286-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-286-3"  
+class="td11">
+ <!--l. 805--><p class="noindent" >No High Throughput rates
+  have been tested.               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-287-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-287-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-288-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-288-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-289-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-289-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-290-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-290-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-291-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-291-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-292-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-292-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-293-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-293-1"  
+class="td11"> s7.3.2.90           </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-293-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-293-3"  
+class="td11">
+ <!--l. 807--><p class="noindent" >No           Internetworking
+  advertisements  (emergency
+  services, etc.)                    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-294-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-294-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-295-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-295-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-296-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-296-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-297-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-297-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-298-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-298-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-299-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-299-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-300-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-300-1"  
+class="td11"> s7.3.2.96.1         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-300-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-300-3"  
+class="td11">
+ <!--l. 809--><p class="noindent" >No Mesh Peering Protocol
+  Identifier.                         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-301-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-301-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-302-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-302-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-303-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-303-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-304-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-304-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-305-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-305-1"  
+class="td11">               </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-306-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-306-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-307-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-307-1"  
+class="td11"> s7.3.2.96.2         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-307-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-307-3"  
+class="td11">
+ <!--l. 812--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-308-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-308-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-309-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-309-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-310-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-310-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-311-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-311-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-312-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-312-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-313-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-313-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-314-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-314-1"  
+class="td11"> s7.3.2.96.3         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-314-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-314-3"  
+class="td11">
+ <!--l. 814--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-315-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-315-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-316-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-316-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-317-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-317-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-318-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-318-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-319-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-319-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-320-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-320-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-321-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-321-1"  
+class="td11"> s7.3.2.96.4         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-321-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-321-3"  
+class="td11">
+ <!--l. 816--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-322-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-322-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-323-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-323-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-324-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-324-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-325-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-325-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-326-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-326-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-327-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-327-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-328-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-328-1"  
+class="td11"> s7.3.2.96.5         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-328-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-328-3"  
+class="td11">
+ <!--l. 818--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-329-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-329-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-330-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-330-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-331-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-331-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-332-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-332-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-333-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-333-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-334-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-334-1"  
+class="td11">               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-335-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-335-1"  
+class="td11"> s7.3.2.96.6         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-335-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-335-3"  
+class="td11">
+ <!--l. 820--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-336-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-336-1"  
+class="td11">               </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-337-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-337-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-338-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-338-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-339-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-339-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-340-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-340-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-341-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-341-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-342-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-342-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-343-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-343-1"  
+class="td11"> s7.3.2.96.7      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-343-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-343-3"  
+class="td11">
+ <!--l. 821--><p class="noindent" >Authenticated          Mesh
+  Peering Exchange Protocol
+  not implemented.               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-344-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-344-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-345-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-345-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-346-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-346-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-347-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-347-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-348-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-348-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-349-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-349-1"  
+class="td11">              </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-350-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-350-1"  
+class="td11"> s7.3.2.96.8      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-350-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-350-3"  
+class="td11">
+ <!--l. 824--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-351-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-351-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-352-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-352-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-353-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-353-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-354-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-354-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-355-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-355-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-356-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-356-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-357-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-357-1"  
+class="td11"> s7.3.2.96.9      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-357-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-357-3"  
+class="td11">
+ <!--l. 825--><p class="noindent" >Only  &#8217;Accepting  Peerings&#8217;
+  and &#8217;Forwarding&#8217; bits.         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-358-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-358-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-359-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-359-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-360-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-360-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-361-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-361-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-362-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-362-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-363-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-363-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-364-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-364-1"  
+class="td11"> s7.3.2.97         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-364-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-364-3"  
+class="td11">
+ <!--l. 828--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-365-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-365-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-366-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-366-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-367-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-367-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-368-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-368-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-369-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-369-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-370-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-370-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-371-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-371-1"  
+class="td11"> s7.3.2.98         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-371-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-371-3"  
+class="td11">
+ <!--l. 830--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-372-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-372-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-373-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-373-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-374-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-374-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-375-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-375-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-376-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-376-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-377-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-377-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-378-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-378-1"  
+class="td11"> s7.3.2.99         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-378-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-378-3"  
+class="td11">
+ <!--l. 832--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-379-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-379-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-380-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-380-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-381-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-381-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-382-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-382-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-383-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-383-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-384-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-384-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-385-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-385-1"  
+class="td11"> s7.3.2.100       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-385-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-385-3"  
+class="td11">
+ <!--l. 833--><p class="noindent" >The  format  has  changed
+  and    <span 
+class="cmtt-10x-x-109">open80211s   </span>needs
+  updating.                         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-386-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-386-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-387-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-387-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-388-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-388-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-389-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-389-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-390-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-390-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-391-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-391-1"  
+class="td11">              </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-392-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-392-1"  
+class="td11"> s7.3.2.101       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-392-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-392-3"  
+class="td11">
+ <!--l. 835--><p class="noindent" >No Channel Switch.           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-393-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-393-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-394-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-394-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-395-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-395-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-396-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-396-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-397-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-397-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-398-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-398-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-399-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-399-1"  
+class="td11"> s7.3.2.101       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-399-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-399-3"  
+class="td11">
+ <!--l. 837--><p class="noindent" >No Channel Switch.           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-400-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-400-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-401-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-401-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-402-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-402-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-403-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-403-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-404-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-404-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-405-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-405-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-406-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-406-1"  
+class="td11"> s7.3.2.102-108  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-406-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-406-3"  
+class="td11">
+ <!--l. 840--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-407-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-407-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-408-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-408-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-409-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-409-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-410-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-410-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-411-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-411-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-412-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-412-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-413-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-413-1"  
+class="td11"> s7.3.2.109-112  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-413-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-413-3"  
+class="td11">
+ <!--l. 842--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-414-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-414-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-415-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-415-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-416-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-416-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-417-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-417-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-418-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-418-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-419-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-419-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-420-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-420-1"  
+class="td11"> s7.3.2.113-114  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-420-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-420-3"  
+class="td11">
+ <!--l. 843--><p class="noindent" >No Proxy Updates.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-421-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-421-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-422-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-422-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-423-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-423-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-424-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-424-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-425-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-425-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-426-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-426-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-427-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-427-1"  
+class="td11"> s7.3.2.115-116  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-427-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-427-3"  
+class="td11">
+ <!--l. 845--><p class="noindent" >No   Authenticated   Mesh
+  Peering Exchange.             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-428-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-428-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-429-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-429-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-430-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-430-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-431-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-431-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-432-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-432-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-433-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-433-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-434-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-434-1"  
+class="td11"> s7.4.1.5          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-434-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-434-3"  
+class="td11">
+ <!--l. 847--><p class="noindent" >No Channel Switch.           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-435-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-435-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-436-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-436-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-437-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-437-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-438-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-438-1"  
+class="td11">
+                                                                     
+
+                                                                     
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-439-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-439-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-440-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-440-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-441-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-441-1"  
+class="td11"> s7.4.7.6          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-441-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-441-3"  
+class="td11">
+ <!--l. 849--><p class="noindent" >No Channel Switch.           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-442-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-442-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-443-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-443-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-444-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-444-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-445-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-445-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-446-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-446-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-447-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-447-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-448-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-448-1"  
+class="td11"> s7.4.14           </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-448-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-448-3"  
+class="td11">
+ <!--l. 851--><p class="noindent" >No                      802.11w
+  support nor Authenticated
+  Mesh Peering Exchange.      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-449-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-449-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-450-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-450-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-451-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-451-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-452-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-452-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-453-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-453-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-454-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-454-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-455-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-455-1"  
+class="td11"> s7.4.15.1         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-455-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-455-3"  
+class="td11">
+ <!--l. 853--><p class="noindent" >Formats       of       action
+  frames have changed in the
+  draft and need updating in
+  <span 
+class="cmtt-10x-x-109">open80211s</span>.                     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-456-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-456-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-457-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-457-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-458-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-458-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-459-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-459-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-460-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-460-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-461-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-461-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-462-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-462-1"  
+class="td11"> s7.4.15.2-3      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-462-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-462-3"  
+class="td11">
+ <!--l. 857--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-463-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-463-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-464-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-464-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-465-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-465-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-466-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-466-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-467-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-467-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-468-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-468-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-469-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-469-1"  
+class="td11"> s7.4.15.4         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-469-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-469-3"  
+class="td11">
+ <!--l. 858--><p class="noindent" >Functionality
+  is there, frame formats have
+  changed slightly.                </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-470-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-470-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-471-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-471-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-472-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-472-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-473-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-473-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-474-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-474-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-475-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-475-1"  
+class="td11">              </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-476-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-476-1"  
+class="td11"> s7.4.15.5         </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-476-2"  
+class="td11"> No         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-476-3"  
+class="td11">
+ <!--l. 861--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-477-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-477-1"  
+class="td11">              </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-478-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-478-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-479-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-479-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-480-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-480-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-481-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-481-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-482-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-482-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-483-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-483-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-484-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-484-1"  
+class="td11"> s7.4.15.6          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-484-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-484-3"  
+class="td11">
+ <!--l. 863--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-485-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-485-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-486-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-486-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-487-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-487-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-488-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-488-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-489-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-489-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-490-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-490-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-491-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-491-1"  
+class="td11"> s7.4.15.7-11      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-491-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-491-3"  
+class="td11">
+ <!--l. 864--><p class="noindent" >No MCCA.                       </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-492-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-492-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-493-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-493-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-494-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-494-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-495-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-495-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-496-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-496-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-497-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-497-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-498-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-498-1"  
+class="td11"> s7.4.15.7-12-13  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-498-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-498-3"  
+class="td11">
+ <!--l. 866--><p class="noindent" >No beacon adjustments.      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-499-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-499-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-500-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-500-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-501-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-501-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-502-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-502-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-503-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-503-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-504-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-504-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-505-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-505-1"  
+class="td11"> s7.4.16.1          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-505-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-505-3"  
+class="td11">
+ <!--l. 868--><p class="noindent" >No      Multihop      Action
+  frames.                            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-506-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-506-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-507-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-507-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-508-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-508-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-509-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-509-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-510-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-510-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-511-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-511-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-512-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-512-1"  
+class="td11"> s7.4.16.2-3       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-512-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-512-3"  
+class="td11">
+ <!--l. 870--><p class="noindent" >No Proxy Updates.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-513-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-513-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-514-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-514-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-515-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-515-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-516-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-516-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-517-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-517-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-518-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-518-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-519-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-519-1"  
+class="td11"> s8                  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-519-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-519-3"  
+class="td11">
+ <!--l. 872--><p class="noindent" >No Security.                      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-520-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-520-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-521-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-521-1"  
+class="td11">              </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-522-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-522-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-523-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-523-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-524-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-524-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-525-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-525-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-526-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-526-1"  
+class="td11"> s9.1                </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-526-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-526-3"  
+class="td11">
+ <!--l. 874--><p class="noindent" >No
+  Mesh Coordinated Channel
+  Access.                            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-527-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-527-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-528-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-528-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-529-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-529-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-530-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-530-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-531-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-531-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-532-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-532-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-533-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-533-1"  
+class="td11"> s9.6                </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-533-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-533-3"  
+class="td11">
+ <!--l. 876--><p class="noindent" >No         MCS         (High
+  Throughput) rates.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-534-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-534-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-535-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-535-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-536-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-536-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-537-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-537-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-538-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-538-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-539-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-539-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-540-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-540-1"  
+class="td11"> s9.9-9a            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-540-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-540-3"  
+class="td11">
+ <!--l. 878--><p class="noindent" >No MCCA.                       </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-541-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-541-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-542-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-542-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-543-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-543-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-544-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-544-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-545-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-545-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-546-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-546-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-547-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-547-1"  
+class="td11"> s9.13              </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-547-2"  
+class="td11"> Inherited (maybe)  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-547-3"  
+class="td11">
+ <!--l. 880--><p class="noindent" >No HT support, but MCS
+  rates  from  mac80211  are
+  probably usable.                </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-548-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-548-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-549-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-549-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-550-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-550-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-551-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-551-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-552-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-552-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-553-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-553-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-554-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-554-1"  
+class="td11"> s9.22.2.1          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-554-2"  
+class="td11"> Yes                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-554-3"  
+class="td11">
+ <!--l. 883--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-555-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-555-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-556-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-556-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-557-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-557-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-558-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-558-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-559-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-559-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-560-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-560-1"  
+class="td11">              </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-561-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-561-1"  
+class="td11"> s9.22.2.2          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-561-2"  
+class="td11"> Yes                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-561-3"  
+class="td11">
+ <!--l. 885--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-562-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-562-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-563-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-563-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-564-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-564-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-565-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-565-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-566-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-566-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-567-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-567-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-568-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-568-1"  
+class="td11"> s9.22.2.3          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-568-2"  
+class="td11"> Yes                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-568-3"  
+class="td11">
+ <!--l. 887--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-569-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-569-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-570-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-570-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-571-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-571-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-572-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-572-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-573-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-573-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-574-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-574-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-575-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-575-1"  
+class="td11"> s9.22.2.4          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-575-2"  
+class="td11"> Yes                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-575-3"  
+class="td11">
+ <!--l. 888--><p class="noindent" >Except      for      Multihop
+  Management Frames.          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-576-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-576-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-577-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-577-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-578-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-578-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-579-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-579-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-580-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-580-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-581-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-581-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-582-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-582-1"  
+class="td11"> s9.22.2.5          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-582-2"  
+class="td11"> Yes                     </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-582-3"  
+class="td11">
+ <!--l. 890--><p class="noindent" >Except         that         the
+  Recently Received Cache is
+  only  applied  to  broadcast
+  frames.                            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-583-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-583-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-584-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-584-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-585-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-585-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-586-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-586-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-587-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-587-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-588-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-588-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-589-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-589-1"  
+class="td11"> s9.22.2.6          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-589-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-589-3"  
+class="td11">
+ <!--l. 892--><p class="noindent" >No
+  support for non-forwarding
+  mesh nodes.                      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-590-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-590-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-591-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-591-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-592-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-592-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-593-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-593-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-594-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-594-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-595-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-595-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-596-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-596-1"  
+class="td11"> s9.22.3            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-596-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-596-3"  
+class="td11">
+ <!--l. 894--><p class="noindent" >No support for Mesh Gates.  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-597-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-597-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-598-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-598-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-599-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-599-1"  
+class="td11">              </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-600-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-600-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-601-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-601-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-602-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-602-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-603-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-603-1"  
+class="td11"> s11.1.0a          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-603-2"  
+class="td11"> No                      </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-603-3"  
+class="td11">
+ <!--l. 896--><p class="noindent" >No clock synchronization.    </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-604-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-604-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-605-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-605-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-606-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-606-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-607-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-607-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-608-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-608-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-609-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-609-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-610-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-610-1"  
+class="td11"> s11.1.3.2.1       </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-610-2"  
+class="td11"> Partially              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-610-3"  
+class="td11">
+ <!--l. 898--><p class="noindent" >Probe  responses  are  sent
+  even   if   Mesh   IDs   don&#8217;t
+  match.                             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-611-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-611-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-612-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-612-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-613-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-613-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-614-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-614-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-615-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-615-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-616-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-616-1"  
+class="td11">              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-617-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-617-1"  
+class="td11"> s11.3.3            </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-617-2"  
+class="td11"> Inherited              </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-617-3"  
+class="td11">
+ <!--l. 901--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-618-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-618-1"  
+class="td11">              </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-619-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-619-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-620-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-620-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-621-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-621-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-622-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-622-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-623-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-623-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-624-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-624-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-625-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-625-1"  
+class="td11"> s11.8        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-625-2"  
+class="td11"> Inherited  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-625-3"  
+class="td11">
+ <!--l. 902--><p class="noindent" >TPC is probably inherited
+  from IBSS. Not tested.        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-626-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-626-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-627-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-627-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-628-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-628-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-629-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-629-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-630-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-630-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-631-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-631-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-632-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-632-1"  
+class="td11"> s11.9        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-632-2"  
+class="td11"> Inherited  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-632-3"  
+class="td11">
+ <!--l. 904--><p class="noindent" >DFS  is  probably  inherited
+  from mac80211. Not tested.  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-633-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-633-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-634-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-634-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-635-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-635-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-636-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-636-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-637-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-637-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-638-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-638-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-639-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-639-1"  
+class="td11"> s11.9.7.2a  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-639-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-639-3"  
+class="td11">
+ <!--l. 906--><p class="noindent" >No channel switching.         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-640-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-640-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-641-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-641-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-642-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-642-1"  
+class="td11">          </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-643-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-643-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-644-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-644-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-645-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-645-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-646-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-646-1"  
+class="td11"> s11.9a      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-646-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-646-3"  
+class="td11">
+ <!--l. 908--><p class="noindent" >No     extended     channel
+  switching.                         </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-647-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-647-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-648-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-648-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-649-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-649-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-650-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-650-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-651-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-651-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-652-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-652-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-653-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-653-1"  
+class="td11"> s11.23      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-653-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-653-3"  
+class="td11">
+ <!--l. 910--><p class="noindent" >No           Internetworking
+  services.                           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-654-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-654-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-655-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-655-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-656-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-656-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-657-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-657-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-658-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-658-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-659-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-659-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-660-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-660-1"  
+class="td11"> s11A        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-660-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-660-3"  
+class="td11">
+ <!--l. 912--><p class="noindent" >No SAE.                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-661-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-661-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-662-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-662-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-663-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-663-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-664-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-664-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-665-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-665-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-666-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-666-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-667-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-667-1"  
+class="td11"> s11C.1      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-667-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-667-3"  
+class="td11">
+ <!--l. 914--><p class="noindent" >No    dot11[[MeshActivated]]:
+  we can join or leave a mesh,
+  but not activate/deactivate.  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-668-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-668-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-669-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-669-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-670-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-670-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-671-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-671-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-672-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-672-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-673-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-673-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-674-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-674-1"  
+class="td11"> s11C.2.1   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-674-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-674-3"  
+class="td11">
+ <!--l. 917--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-675-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-675-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-676-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-676-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-677-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-677-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-678-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-678-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-679-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-679-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-680-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-680-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-681-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-681-1"  
+class="td11"> s11C.2.2   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-681-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-681-3"  
+class="td11">
+ <!--l. 919--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-682-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-682-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-683-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-683-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-684-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-684-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-685-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-685-1"  
+class="td11">
+                                                                     
+
+                                                                     
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-686-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-686-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-687-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-687-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-688-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-688-1"  
+class="td11"> s11C.2.3   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-688-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-688-3"  
+class="td11">
+ <!--l. 920--><p class="noindent" >Mesh   profile   lacks   Mesh
+  Peering Protocol Identifier.  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-689-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-689-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-690-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-690-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-691-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-691-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-692-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-692-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-693-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-693-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-694-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-694-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-695-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-695-1"  
+class="td11"> s11C.2.4   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-695-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-695-3"  
+class="td11">
+ <!--l. 922--><p class="noindent" >Mesh  configuration  checks
+  don&#8217;t include HT and MCS
+  rates.                              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-696-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-696-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-697-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-697-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-698-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-698-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-699-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-699-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-700-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-700-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-701-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-701-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-702-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-702-1"  
+class="td11"> s11C.2.5   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-702-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-702-3"  
+class="td11">
+ <!--l. 925--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-703-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-703-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-704-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-704-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-705-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-705-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-706-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-706-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-707-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-707-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-708-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-708-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-709-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-709-1"  
+class="td11"> s11C.2.6   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-709-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-709-3"  
+class="td11">
+ <!--l. 926--><p class="noindent" >Scanning  does  not  check
+  Mesh ID.                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-710-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-710-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-711-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-711-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-712-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-712-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-713-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-713-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-714-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-714-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-715-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-715-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-716-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-716-1"  
+class="td11"> s11C.2.7   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-716-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-716-3"  
+class="td11">
+ <!--l. 929--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-717-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-717-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-718-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-718-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-719-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-719-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-720-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-720-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-721-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-721-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-722-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-722-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-723-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-723-1"  
+class="td11"> s11C.2.8   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-723-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-723-3"  
+class="td11">
+ <!--l. 931--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-724-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-724-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-725-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-725-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-726-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-726-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-727-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-727-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-728-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-728-1"  
+class="td11">          </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-729-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-729-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-730-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-730-1"  
+class="td11"> s11C.3.1   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-730-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-730-3"  
+class="td11">
+ <!--l. 932--><p class="noindent" >No security (no AMPE).     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-731-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-731-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-732-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-732-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-733-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-733-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-734-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-734-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-735-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-735-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-736-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-736-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-737-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-737-1"  
+class="td11"> f11C-1      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-737-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-737-3"  
+class="td11">
+ <!--l. 934--><p class="noindent" >Only       the       &#8217;Security
+  Enabled:N&#8217; branch.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-738-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-738-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-739-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-739-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-740-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-740-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-741-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-741-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-742-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-742-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-743-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-743-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-744-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-744-1"  
+class="td11"> s11C.3.2   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-744-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-744-3"  
+class="td11">
+ <!--l. 937--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-745-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-745-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-746-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-746-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-747-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-747-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-748-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-748-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-749-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-749-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-750-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-750-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-751-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-751-1"  
+class="td11"> s11C.3.3   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-751-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-751-3"  
+class="td11">
+ <!--l. 939--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-752-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-752-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-753-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-753-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-754-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-754-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-755-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-755-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-756-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-756-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-757-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-757-1"  
+class="td11">          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-758-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-758-1"  
+class="td11"> s11C.4.1   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-758-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-758-3"  
+class="td11">
+ <!--l. 940--><p class="noindent" >No AID assignment and no
+  TIM.                               </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-759-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-759-1"  
+class="td11">          </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-760-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-760-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-761-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-761-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-762-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-762-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-763-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-763-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-764-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-764-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-765-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-765-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-766-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-766-1"  
+class="td11"> s11C.4.2        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-766-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-766-3"  
+class="td11">
+ <!--l. 942--><p class="noindent" >No AMPE support.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-767-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-767-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-768-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-768-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-769-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-769-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-770-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-770-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-771-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-771-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-772-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-772-1"  
+class="td11">             </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-773-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-773-1"  
+class="td11"> s11C.4.3        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-773-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-773-3"  
+class="td11">
+ <!--l. 944--><p class="noindent" >No AMPE support.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-774-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-774-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-775-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-775-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-776-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-776-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-777-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-777-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-778-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-778-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-779-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-779-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-780-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-780-1"  
+class="td11"> s11C.4.4        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-780-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-780-3"  
+class="td11">
+ <!--l. 946--><p class="noindent" >Except  no  peer  link  ID
+  check on peer link close to
+  prevent allow reconnections
+  after a node loses state.       </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-781-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-781-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-782-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-782-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-783-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-783-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-784-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-784-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-785-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-785-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-786-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-786-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-787-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-787-1"  
+class="td11"> s11C.5          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-787-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-787-3"  
+class="td11">
+ <!--l. 949--><p class="noindent" >No AMPE support.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-788-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-788-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-789-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-789-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-790-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-790-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-791-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-791-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-792-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-792-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-793-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-793-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-794-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-794-1"  
+class="td11"> s11C.6          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-794-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-794-3"  
+class="td11">
+ <!--l. 951--><p class="noindent" >No Group Key handshake.   </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-795-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-795-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-796-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-796-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-797-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-797-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-798-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-798-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-799-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-799-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-800-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-800-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-801-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-801-1"  
+class="td11"> s11C.7          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-801-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-801-3"  
+class="td11">
+ <!--l. 953--><p class="noindent" >Only HWMP is supported
+  today,  but  recent  patches
+  are in their way upstream to
+  allow  vendor  specific  path
+  selection algorithms.           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-802-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-802-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-803-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-803-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-804-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-804-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-805-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-805-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-806-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-806-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-807-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-807-1"  
+class="td11">             </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-808-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-808-1"  
+class="td11"> s11C.8          </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-808-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-808-3"  
+class="td11">
+ <!--l. 956--><p class="noindent" >Airtime      Link      metric
+  depends on traffic statistics
+  and on transmission rates.
+  The  formare  are  provided
+  by  the  driver  and  change
+  from vendor to vendor. The
+  latter are computed by the
+  rate  adaptation  algorithm
+  in use, which is configurable
+  and  also  can  change  from
+  vendor to vendor.              </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-809-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-809-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-810-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-810-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-811-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-811-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-812-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-812-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-813-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-813-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-814-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-814-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-815-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-815-1"  
+class="td11"> s11C.9.1        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-815-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-815-3"  
+class="td11">
+ <!--l. 963--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-816-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-816-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-817-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-817-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-818-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-818-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-819-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-819-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-820-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-820-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-821-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-821-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-822-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-822-1"  
+class="td11"> s11C.9.2        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-822-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-822-3"  
+class="td11">
+ <!--l. 965--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-823-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-823-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-824-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-824-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-825-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-825-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-826-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-826-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-827-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-827-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-828-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-828-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-829-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-829-1"  
+class="td11"> s11C.9.3        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-829-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-829-3"  
+class="td11">
+ <!--l. 967--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-830-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-830-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-831-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-831-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-832-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-832-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-833-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-833-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-834-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-834-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-835-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-835-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-836-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-836-1"  
+class="td11"> s11C.9.4        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-836-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-836-3"  
+class="td11">
+ <!--l. 969--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-837-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-837-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-838-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-838-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-839-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-839-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-840-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-840-1"  
+class="td11">
+                                                                     
+
+                                                                     
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-841-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-841-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-842-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-842-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-843-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-843-1"  
+class="td11"> s11C.9.5        </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-843-2"  
+class="td11"> Inherited  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-843-3"  
+class="td11">
+ <!--l. 970--><p class="noindent" >Using the kernel&#8217;s bridging
+  support.                           </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-844-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-844-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-845-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-845-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-846-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-846-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-847-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-847-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-848-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-848-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-849-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-849-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-850-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-850-1"  
+class="td11"> s11C.9.6-12    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-850-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-850-3"  
+class="td11">
+ <!--l. 973--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-851-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-851-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-852-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-852-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-853-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-853-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-854-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-854-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-855-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-855-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-856-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-856-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-857-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-857-1"  
+class="td11"> s11C.9.13      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-857-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-857-3"  
+class="td11">
+ <!--l. 975--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-858-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-858-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-859-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-859-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-860-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-860-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-861-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-861-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-862-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-862-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-863-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-863-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-864-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-864-1"  
+class="td11"> s11C.10.1      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-864-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-864-3"  
+class="td11">
+ <!--l. 976--><p class="noindent" >Mesh  gates  have  limited
+  functionality  and  are  not
+  advertised into the mesh.     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-865-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-865-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-866-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-866-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-867-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-867-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-868-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-868-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-869-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-869-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-870-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-870-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-871-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-871-1"  
+class="td11"> s11C.9.10.2    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-871-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-871-3"  
+class="td11">
+ <!--l. 978--><p class="noindent" >No   Gate   announcement
+  protocol.                          </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-872-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-872-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-873-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-873-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-874-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-874-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-875-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-875-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-876-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-876-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-877-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-877-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-878-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-878-1"  
+class="td11"> s11C.9.10.3.1  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-878-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-878-3"  
+class="td11">
+ <!--l. 981--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-879-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-879-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-880-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-880-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-881-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-881-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-882-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-882-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-883-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-883-1"  
+class="td11">             </td>
+                                                                     
+
+                                                                     
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-884-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-884-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-885-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-885-1"  
+class="td11"> s11C.9.10.3.2  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-885-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-885-3"  
+class="td11">
+ <!--l. 983--><p class="noindent" >                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-886-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-886-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-887-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-887-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-888-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-888-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-889-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-889-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-890-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-890-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-891-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-891-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-892-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-892-1"  
+class="td11"> s11C.9.10.3.3  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-892-2"  
+class="td11"> Partially  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-892-3"  
+class="td11">
+ <!--l. 984--><p class="noindent" >Clauses (a) and (d) are not
+  implemented.  Clauses  (b)
+  and (c) are.                      </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-893-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-893-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-894-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-894-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-895-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-895-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-896-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-896-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-897-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-897-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-898-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-898-1"  
+class="td11">             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-899-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-899-1"  
+class="td11"> s11C.9.10.4    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-899-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-899-3"  
+class="td11">
+ <!--l. 987--><p class="noindent" >No Proxy protocol.             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-900-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-900-1"  
+class="td11">             </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-901-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-901-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-902-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-902-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-903-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-903-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-904-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-904-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-905-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-905-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-906-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-906-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-907-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-907-1"  
+class="td11"> s11C.10.5    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-907-2"  
+class="td11"> Inherited  </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-907-3"  
+class="td11">
+ <!--l. 989--><p class="noindent" >Policy       enforced       by
+  mac80211.                        </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-908-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-908-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-909-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-909-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-910-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-910-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-911-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-911-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-912-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-912-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-913-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-913-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-914-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-914-1"  
+class="td11"> s11C.11      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-914-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-914-3"  
+class="td11">
+ <!--l. 991--><p class="noindent" >No  intra-mesh  congestion
+  control.                            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-915-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-915-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-916-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-916-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-917-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-917-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-918-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-918-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-919-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-919-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-920-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-920-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-921-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-921-1"  
+class="td11"> s11C.12.1-2  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-921-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-921-3"  
+class="td11">
+ <!--l. 993--><p class="noindent" >No synchronization.            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-922-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-922-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-923-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-923-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-924-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-924-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-925-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-925-1"  
+class="td11">
+                                                                     
+
+                                                                     
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-926-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-926-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-927-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-927-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-928-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-928-1"  
+class="td11"> s11C.12.3.1  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-928-2"  
+class="td11"> Yes         </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-928-3"  
+class="td11">
+ <!--l. 995--><p class="noindent" >Beaconing      is      highly
+  dependent on hardware and
+  driver.                             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-929-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-929-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-930-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-930-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-931-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-931-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-932-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-932-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-933-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-933-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-934-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-934-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-935-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-935-1"  
+class="td11"> s11C.12.3.2  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-935-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-935-3"  
+class="td11">
+ <!--l. 997--><p class="noindent" >Timing    information    on
+  beacons is unused.             </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-936-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-936-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-937-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-937-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-938-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-938-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-939-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-939-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-940-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-940-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-941-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-941-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-942-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-942-1"  
+class="td11"> s11C.12.4    </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-942-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-942-3"  
+class="td11">
+ <!--l. 999--><p class="noindent" >No  Mesh  Beacon  Collision
+  Avoidance.                       </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-943-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-943-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-944-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-944-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-945-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-945-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-946-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-946-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-947-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-947-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-948-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-948-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-949-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-949-1"  
+class="td11"> s11C.13      </td><td  style="white-space:nowrap; text-align:left;" id="TBL-5-949-2"  
+class="td11"> No          </td><td  style="white-space:wrap; text-align:left;" id="TBL-5-949-3"  
+class="td11">
+ <!--l. 1001--><p class="noindent" >No Power save in MBSS.     </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-950-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-950-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-951-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-951-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-952-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-952-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-953-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-953-1"  
+class="td11">            </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-954-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-954-1"  
+class="td11">            </td></tr>
+<tr  
+ style="vertical-align:baseline;" id="TBL-5-47-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-47-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-48-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-48-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-49-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-49-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-50-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-50-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-51-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-51-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-52-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-52-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-53-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-53-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-54-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-54-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-55-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-55-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-56-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-5-56-1"  
+class="td11">
+</td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-57-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-57-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-58-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-58-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-59-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-59-1"  
+class="td11">  </td>
+</tr><tr  
+ style="vertical-align:baseline;" id="TBL-5-60-"><td  style="white-space:nowrap; text-align:left;" id="TBL-5-60-1"  
+class="td11">  </td></tr>
+</table></div>
+</div>
+<!--l. 1005--><p class="indent" >
+                                                                     
+
+                                                                     
+   <h4 class="subsectionHead"><span class="titlemark">7.1   </span> <a 
+ id="x1-360007.1"></a>High Level Feature Summary</h4>
+<!--l. 1008--><p class="nopar" >This section provides a high level summary of the implemented and missing
+features in <span 
+class="cmtt-10x-x-109">open80211s</span>. These are listed in Figures <a 
+href="#x1-36017r1">1<!--tex4ht:ref: impl --></a> and <a 
+href="#x1-36036r2">2<!--tex4ht:ref: nonimpl --></a> respectively.
+<!--l. 1012--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                     
+
+                                                                     
+<a 
+ id="x1-36017r1"></a>
+                                                                     
+
+                                                                     
+     <ol  class="enumerate1" >
+     <li 
+  class="enumerate" id="x1-36002x1">Frame Formats (Data and Management)
+     </li>
+     <li 
+  class="enumerate" id="x1-36004x2">Frame Forwarding
+     </li>
+     <li 
+  class="enumerate" id="x1-36006x3">Beaconing
+     </li>
+     <li 
+  class="enumerate" id="x1-36008x4">Mesh Peering
+     </li>
+     <li 
+  class="enumerate" id="x1-36010x5">Path Selection (HWMP and Vendor Specific)
+     </li>
+     <li 
+  class="enumerate" id="x1-36012x6">Link Metric (Airtime and Vendor Specific)
+     </li>
+     <li 
+  class="enumerate" id="x1-36014x7">External-to-external proxying
+     </li>
+     <li 
+  class="enumerate" id="x1-36016x8">Bridging</li></ol>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;1: </span><span  
+class="content">Implemented features</span></div><!--tex4ht:label?: x1-36017r1 -->
+                                                                     
+
+                                                                     
+<!--l. 1024--><p class="indent" >   </div><hr class="endfigure">
+<!--l. 1028--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                     
+
+                                                                     
+<a 
+ id="x1-36036r2"></a>
+                                                                     
+
+                                                                     
+     <ol  class="enumerate1" >
+     <li 
+  class="enumerate" id="x1-36019x1">Security (Simultaneous Authentication of Equals)
+     </li>
+     <li 
+  class="enumerate" id="x1-36021x2">Synchronization
+     </li>
+     <li 
+  class="enumerate" id="x1-36023x3">Contention-free access (Mesh Coordinated Channel Access)
+     </li>
+     <li 
+  class="enumerate" id="x1-36025x4">Beacon Collision Avoidance
+     </li>
+     <li 
+  class="enumerate" id="x1-36027x5">Gate Announcement Protocol
+     </li>
+     <li 
+  class="enumerate" id="x1-36029x6">External-to-internal proxying
+     </li>
+     <li 
+  class="enumerate" id="x1-36031x7">Proxy Protocol
+     </li>
+     <li 
+  class="enumerate" id="x1-36033x8">Power Save
+     </li>
+     <li 
+  class="enumerate" id="x1-36035x9">High Throughput rates</li></ol>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;2: </span><span  
+class="content">Missing features</span></div><!--tex4ht:label?: x1-36036r2 -->
+                                                                     
+
+                                                                     
+<!--l. 1041--><p class="indent" >   </div><hr class="endfigure">
+    
+</code></pre>
+                                                                     
+

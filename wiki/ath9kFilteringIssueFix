@@ -1,0 +1,13 @@
+How to fix ath9k filtering issue on older cards:
+Find your macVersion and add it to this code in ath9k/recv.c 
+
+<pre><code>
+                /* The following may also be needed for other older chips */
+-                if (sc->sc_ah->hw_version.macVersion == AR_SREV_VERSION_9160)
++                if (sc->sc_ah->hw_version.macVersion == AR_SREV_VERSION_9160 ||
++                    sc->sc_ah->hw_version.macVersion == AR_SREV_VERSION_XXXX)
+                        rfilt |= ATH9K_RX_FILTER_PROM;
+
+</code></pre>
+For instance, for our PCIE card the code to use is AR_SREV_VERSION_5416_PCIE 
+If unsure, you can just remove the if guard altogether.

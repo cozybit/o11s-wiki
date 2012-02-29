@@ -1,0 +1,340 @@
+This page explains how to set up a mesh network using open80211s and a "supported driver":http://o11s.org/trac/wiki#[[DriverStatus]].
+
+*Note:* at this time, this HOWTO assumes that you are not running a <code>[[WiFi]]</code> manager such as <code>[[NetworkManager]]</code>.  Please kill or otherwise stop <code>[[NetworkManager]]</code> or similar software before setting up your mesh interfaces or tell it to ignore the device that you plan to use for mesh.
+
+h3. Index
+  * "Software Requirements":/cozybit/open80211s/wiki/#pieces
+     - "For Open Mesh":/cozybit/open80211s/wiki/#openpieces
+     - "For Secured Mesh":/cozybit/open80211s/wiki/#secpieces
+  * "Open Mesh":/cozybit/open80211s/wiki/#openmesh
+  * "Secured Mesh":/cozybit/open80211s/wiki/#secmesh
+  * "Advanced Tinkering":/cozybit/open80211s/wiki/#advancedmesh
+  * "Mesh Portal (MPP)":/cozybit/open80211s/wiki/#meshportal
+
+h2. Software Requirements #pieces
+
+In order to set up a mesh you'll need a kernel and a few packages.  Internally we use a master project ("distro11s":https://git.github.com/cozybit/distro11s) that can build a full mesh node from the different repositories listed below.  You are welcome to try that.
+
+o11s works on OpenWrt - see "Building for [[OpenWrt]]":/cozybit/open80211s/wiki/wiki:[[OpenWrtBuilding]]
+
+Or you can fetch the different components individually:
+
+h3. For Open Mesh #openpieces
+
+An open mesh is one where all peers with compatible configuration are allowed to join the mesh.  Essentially this means that just the Mesh ID and the channel must match.
+
+h4. The kernel #kernel
+
+Get the wireless-testing kernel:
+<pre><code>
+git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
+</code></pre>
+
+If you are trying this release within a few days of release date all our patches may not be in wireless-testing yet.  In that case, just clone the kernel from here:
+
+<pre><code>
+git://o11s.org/open80211s
+</code></pre>
+
+Configure the kernel including the <code>mac80211</code> stack with mesh capabilities (<code>CONFIG_MAC80211</code>, <code>CONFIG_MAC80211_MESH</code>) and enable the driver(s) that you need, for example the <code>zd1211-rw</code> driver (<code>CONFIG_ZD1211RW</code>). Compile and install on your target.  Here are "instructions for Ubuntu":/cozybit/open80211s/wiki/wiki:Ubuntu.  
+
+You also have the option of using "compat-wireless":http://linuxwireless.org/en/users/Download instead of building the kernel or you may also use the "2.6.26":http://git.kernel.org/?p=linux%2Fkernel%2Fgit%2Ftorvalds%2Flinux-2.6.git;a=summary or later mainline kernel.  Using wireless-testing is strongly recommended as it represents the latest development and driver support.
+
+h4. iw
+
+Follow the instructions at "iw documentation page":http://linuxwireless.org/en/users/Documentation/iw/ to build the latest version of <code>iw</code> from source or use a recent released version of <code>iw</code>.
+
+h3. For Secured Mesh #secpieces
+
+In a secured mesh, all peers must share a secret password.  Authentication is established via the Simultaneous Authentication of Equals protocol.  Key derivation and cipher suite negotiation is done via the Authenticated Mesh Peering Exchange.  Both protocols are specified in the 802.11s amendment.  
+
+In addition to the basement requirements above you will need the following: 
+
+h4. Kernel
+
+See "this section":/cozybit/open80211s/wiki/#kernel
+
+h4. authsae
+
+Get our fork of authsae from here
+
+<pre><code>
+git://github.com/cozybit/authsae.git
+</code></pre>
+
+<code>authsae</code> depends on openssl.  You'll have to edit <code>linux/Makefile</code> to tell it where to find it.
+
+Then build:
+
+<pre><code>
+$cc -g -DLINUX -Wall -Werror -I..   -c -o meshd.o meshd.c
+cc -g -DLINUX -Wall -Werror -I..   -c -o ../common.o ../common.c
+cc -g -DLINUX -Wall -Werror -I..   -c -o ../sae.o ../sae.c
+cc -g -DLINUX -Wall -Werror -I..   -c -o ../service.o ../service.c
+cc -g -DLINUX -Wall -Werror -I..   -c -o ../ampe.o ../ampe.c
+cc -o meshd meshd.o ../common.o ../sae.o ../service.o ../ampe.o ../crypto/aes_siv.o -L. -lcrypto -lconfig
+cc -g -DLINUX -Wall -Werror -I..   -c -o meshd-nl80211.o meshd-nl80211.c
+cc -g -DLINUX -Wall -Werror -I..   -c -o nlutils.o nlutils.c
+ar rcs libsae.a ../common.o ../sae.o ../service.o ../ampe.o ../crypto/aes_siv.o
+cc -o meshd-nl80211 meshd-nl80211.o nlutils.o libsae.a -L. -lsae -lnl -lnl-genl -lcrypto  -lconfig
+cc -g -DLINUX -Wall -Werror -I..   -c -o mon.o mon.c
+cc mon.o ../service.o ../common.o -o mon
+</code></pre>
+
+h2. Open Mesh Setup #openmesh
+
+Each mesh node needs to be configured as follows:
+
+* Boot several nodes with the compiled kernel and with <code>iw</code> properly installed.
+
+* Choose a mesh ID.  The mesh ID is a string that will be used in the mesh node beacons.  Only mesh points with the same mesh id will be able to communicate with each other. The mesh id is a maximum of 32 bytes long.  In this document, we refer to the mesh id as $MESH_ID.
+
+* Add a new mesh interface for the _wlanN_ device on each node.  You can choose the name of the mesh interface.  "mesh" is a popular choice.  In this document, we refer to the mesh interface as $MESH_IFACE.
+
+<pre><code>
+# iw dev wlan0 interface add $MESH_IFACE type mp
+</code></pre>
+
+ A new interface will be created:
+
+<pre><code>
+# ifconfig -a | grep mesh
+mesh      Link encap:Ethernet  HWaddr 00:18:39:14:48:B5  
+</code></pre>
+
+*Note:* depending on your Linux distribution, you may see "a slightly different name":http://linuxwireless.org/en/users/Download#Knownissues for the mesh interface.
+
+All mesh interfaces start by default in channel 1. The channel can be changed with 
+
+<pre><code>
+# iw dev $MESH_IFACE set channel <channel>
+</code></pre>
+
+Bring up your $MESH_IFACE interface and assign an IP
+
+<pre><code>
+# ifconfig $MESH_IFACE <ip_addr>
+</code></pre>
+
+For this tutorial, let's assume that our mesh nodes are assigned addresses in the <code>192.168.3.80/28</code> subnet.
+
+<pre><code>
+# ifconfig $MESH_IFACE 192.168.3.80
+</code></pre>
+
+Join a mesh network:
+
+<pre><code>
+# iw dev $MESH_IFACE mesh join $MESH_ID
+</code></pre>
+
+* In the default configuration, mesh points will automatically attempt to create peer links will all other mesh nodes with the same mesh ID.  You can examine which peer links have been established with the _iw dev $MESH_IFACE station dump_ command:
+
+<pre><code>
+# iw dev $MESH_IFACE station dump
+Station 00:15:6d:84:14:10 (on mesh)
+	inactive time:	1320 ms
+	rx bytes:	352
+	rx packets:	4
+	tx bytes:	174
+	tx packets:	2
+	signal:  	-61 dBm
+	tx bitrate:	1.0 MBit/s
+	mesh llid:	32577
+	mesh plid:	15969
+	mesh plink:	ESTAB
+Station 00:15:6d:84:14:09 (on mesh)
+	inactive time:	3370 ms
+	rx bytes:	1064
+	rx packets:	12
+	tx bytes:	545
+	tx packets:	7
+	signal:  	-53 dBm
+	tx bitrate:	1.0 MBit/s
+	mesh llid:	41036
+	mesh plid:	24435
+	mesh plink:	ESTAB
+</code></pre>
+
+ Each _Station'' stanza in the station dump output represents a mesh node with whom we have a peer link.  The first line shows the MAC address of the mesh node.  The ''mesh plink_ field reports the state of the peer link with this mesh node.  When this value is ESTAB, direct communication with this mesh node is possible.
+
+* You should now be able to ping any node in the mesh.  After doing that you can use _arp'' and ''iw_ to inspect the arp table and path table.  This will reveal where the packet was actually sent in order to get to its destination.
+
+<pre><code>
+192-168-3-80:~# ping -c 2 192.168.3.83
+PING 192.168.3.83 (192.168.3.83) 56(84) bytes of data.
+64 bytes from 192.168.3.83: icmp_seq=1 ttl=64 time=8.85 ms
+64 bytes from 192.168.3.83: icmp_seq=2 ttl=64 time=3.42 ms
+
+192-168-3-80:~# arp
+? (192.168.3.83) at 00:15:6d:84:14:0e [ether]  on mesh
+
+192-168-3-80:~# iw dev $MESH_IFACE mpath dump
+00:15:6d:84:14:10 00:15:6d:84:14:10 mesh	0	228 	0	2196731904	0	0	0x10
+00:15:6d:84:14:0e 00:15:6d:84:14:10 mesh	2	456 	0	2196731904	360	0	0x4
+00:15:6d:84:14:09 00:15:6d:84:14:09 mesh	1	8193	0	2196731904	0	0	0x10
+</code></pre>
+
+ The arp table shows the hardware address of the destination node.  This is useful for interpreting the output of the _mpath dump'' command.  The ''mpath dump_ shows the table that the mesh stack uses to route packets.  This table is constructed as the mesh stack successfully establishes paths to destinations in the mesh.  Each output line shows the destination address in the first column and the next hop address in the second column.  Look up the destination address of our ping packet (00:15:6d:84:14:0e) in this table.  You can see that the next hop is 00:15:6d:84:14:10, revealing that the packet will not be sent directly to the destination.  Instead, it will be sent to 00:15:6d:84:14:10 who will presumably forward it on appropriately.  In contrast, if the destination of the packet were 00:15:6d:84:14:09, the packet would be sent directly to that node.  This is because the path table reports the same address for the destination and next hop.
+
+Each entry in the _mpath dump_ has several trailing fields after the destination and next hop addresses.  For more information on the meaning of these fields, see the "mpath page":/cozybit/open80211s/wiki/wiki:mpath.  Also, be sure to check the "the driver status page ":http://o11s.org/trac/wiki#[[DriverStatus]] for any known issues related to your driver.
+
+Et voilà!
+
+h2. Secured Mesh Setup #secmesh
+
+Everything you need to create an authenticated mesh is listed in "Requirements":/cozybit/open80211s/wiki/#secpieces. <code>authsae</code> will handle all authentication and peering for us. 
+
+ Edit authsae.conf to enter your mesh password:
+
+<pre><code>
+/* this is a comment */
+authsae:
+{
+ sae:
+  {
+    debug = 480;
+    password = "thisisreallysecret";
+    group = "26, 21, 25, 20":/cozybit/open80211s/wiki/19,;
+    blacklist = 5;
+    thresh = 5;
+    lifetime = 3600;
+  };
+ meshd:
+  {
+       meshid = "byteme";
+       interface = "mesh0";
+       passive = 0;
+       debug = 1;
+       mediaopt = 1;
+       band = "11g";
+       channel = 1;
+       htmode="HT20";
+  };
+};
+
+
+</code></pre>
+
+Then on each node:
+<pre><code>
+AUTHSAE_DIR=/path/to/authsae
+AUTHSAE_CONF=/path/to/authsae.conf
+$AUTHSAE_DIR/linux/meshd-nl80211 -c $AUTHSAE_CONF -s $MESHID -i $MESH_IFACE
+</code></pre>
+
+After authentication and peering completes you should see authenticated mesh peers:
+<pre><code>
+$ iw $MESH_IFACE station dump 
+</code></pre>
+
+<pre><code>
+Station 00:02:03:04:00:00 (on mesh0)
+	inactive time:	608 ms
+	rx bytes:	26967
+	rx packets:	535
+	tx bytes:	1182
+	tx packets:	10
+	tx retries:	0
+	tx failed:	0
+	signal:  	-30 dBm
+	signal avg:	-30 dBm
+	tx bitrate:	1.0 MBit/s
+	mesh llid:	0
+	mesh plid:	0
+	mesh plink:	ESTAB
+</code></pre>
+
+h2. Advanced Tinkering #advancedmesh
+
+* You can modify the mesh path table with these commands:
+  * _iw dev $MESH_IFACE mpath del $DST_ADDR_: to delete a mesh path entry.
+  * _iw dev $MESH_IFACE mpath new $DST_ADDR next_hop $NEXTHOP_ADDR_ to force a specific network topology.
+* You can modify the mesh peer links table with these commands:
+  * _iw dev $MESH_IFACE station dump_: list all the plinks.
+  * _iw dev $MESH_IFACE station set $HW_ADDR plink_action [open|block]_: trigers a specific peer link stablishment process or blocks a specific peer link.
+  * _iw dev $MESH_IFACE station del $HW_ADDR_: deletes a peer link from the peer table.
+
+* You can get and set mesh parameters using the "mesh_param" command in _iw_.  For example, to change the mesh TTL value (which defaults to 5), one would:
+<pre><code>
+# iw dev $MESH_IFACE get mesh_param mesh_ttl
+5
+# iw dev $MESH_IFACE set mesh_param mesh_ttl 3
+</code></pre>
+
+The following mesh parameters can be inspected and set:
+* *mesh_retry_timeout*  _(time in ms to wait for a peering confirm frame before resending a peering open frame)_ 
+* *mesh_confirm_timeout* _ (time in ms to wait for a peering confirm frame before  aborting the attempt)_
+* *mesh_holding_timeout*  _(time in ms to hold a peer entry before removing it from the peer list, following a peering close request, or other peering timeouts)_
+* *mesh_max_peer_links* _(the maximum number of established peer links this node can have)_
+* *mesh_max_retries* _(the number of times to attempt peering requests before aborting)_
+* *mesh_ttl*  _(the number of hops before a data transmission in the mesh is dropped)_
+* *mesh_auto_open_plinks* _ (whether or not to automatically open peer links with a discovered peer)_
+* *mesh_hwmp_max_preq_retries*  _(the number of attempts that this node can make to discover a path to a single destination. the minimum wait time between retries is twice the mesh_hwmp_net_diameter_traversal_time)_
+* *mesh_path_refresh_time* _(how many ms prior to a path expiration should a path refresh be attempted)_
+* *mesh_min_discovery_timeout*  _(? does this override the 2x diameter_traversal_time for preq_retries?)_
+* *mesh_element_ttl*  _(the number of hops an hwmp element may be propagated)_
+* *mesh_hwmp_active_path_timeout* _(the length of time "TU":/cozybit/open80211s/wiki/in that derived forwarding path information will remain valid)_
+* *mesh_hwmp_preq_min_interval*  _(interval "TU":/cozybit/open80211s/wiki/in between proactive tree building path requests from this root node)_
+* *mesh_hwmp_max_preq_retries*  _(the number of attempts for path discovery to a single desitnation in the mesh before aborting)_
+* *mesh_hwmp_net_diameter_traversal_time* _(the interval "TU":/cozybit/open80211s/wiki/in that an originator hwmp sequence number may be re-used when attempting to discover paths, to improve established return path stability and reduce overhead.)_
+* *mesh_hwmp_rootmode*  _(if this node should operate as a root node, i.e. a gateway node)_
+* *mesh_hwmp_rann_interval*  _(time in ms between root announcements)_
+* *mesh_gate_announcements*  _(whether this node should announce itself as a root node gateway)_
+
+_Note: 1 TU = 1024 microseconds._
+
+h2. Wireshark
+
+Our wireshark mesh patches have been accepted upstream (since r38281), so you just need to get a recent wireshark version to dissect mesh (see here how to get it http://www.wireshark.org/develop.html).  
+
+h3. Open Mesh
+
+For an open mesh network, Wireshark recognizes and dissects the data within the mesh frames
+
+||[[Image(HOWTO-0.4.2:wireshark-data.png,100%)]]||[[Image(HOWTO-0.4.2:wireshark-data-icmp.png,100%)]]||
+
+h3. Secure Mesh
+
+For this scenario, Wireshark can only parse the mesh frames (because the data is encrypted)
+
+||[[Image(HOWTO-0.4.2:wireshark-data-secure-1.png,100%)]]||[[Image(HOWTO-0.4.2:wireshark-data-secure-2.png,100%)]]||
+
+h2. Mesh Gate #meshportal
+
+A mesh gate is just a mesh node that connects to an external network.  To bring up a mesh gate we need to setup up a bridge between a mesh interface and, for example, an Ethernet interface.
+
+1. Bring up a mesh interface as described in the "Testing" section above.
+<pre><code>
+mpp$ iw dev wlan0 interface add $MESH_IFACE type mp mesh_id ${MESH_ID}
+mpp$ ifconfig $MESH_IFACE up
+</code></pre>
+
+2. Add this new interface and your ethN interface to a new bridge:
+<pre><code>
+mpp$ brctl addbr br0
+mpp$ brctl stp br0 off
+mpp$ brctl addif br0 eth1
+mpp$ brctl addif br0 mesh
+mpp$ ifconfig $MESH_IFACE down
+mpp$ ifconfig eth1 down
+mpp$ ifconfig $MESH_IFACE 0.0.0.0 up
+mpp$ ifconfig eth1 0.0.0.0 up
+mpp$ ifconfig br0 ${MESH_IP}
+</code></pre>
+If you are having problem setting up the bridge, here is a great howto: "Ethernet Bridge + netfilter HOWTO":http://www.faqs.org/docs/Linux-HOWTO/Ethernet-Bridge-netfilter-HOWTO.html
+
+3. Enable gate announcements
+
+You can configure gates to advertise their presence on the mesh.  We do this by including those advertisements in root announcements.  To enable this functionality you must make your gate a root node and enable gate announcements:
+
+<pre><code>
+iw mesh set mesh_param mesh_hwmp_rootmode=1
+iw mesh set mesh_param mesh_gate_announcements=1
+</code></pre>
+ 
+Once you do this, all the nodes in your mesh will proactively create paths to your gate.  Mesh nodes will send to gate(s) all traffic to those destinations that could not be resolved in the mesh.
+
+Gates introduce some management and data traffic overhead.  You should keep the number of gates down on your network.
+
+"Comments?  Questions?  Praise?  Flames?":http://o11s.org/mailman/listinfo/devel

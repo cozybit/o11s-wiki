@@ -1,0 +1,18 @@
+*Note:* page is for Release 0.2.0.  Please see the "latest HOWTO":http://o11s.org/trac/wiki/HOWTO for up-to-date documentation.
+
+This is the third release of the open80211s stack, and the first one that is fully usable.  Enjoy!
+
+h2. Components
+* "o80211s stack RELEASE 0.2.0":http://www.o11s.org/trac/browse?p=open80211s.git;a=commit;h=3a0ee5d29adedb0bc0b04a3366f30e58be34e127
+* "o8011s iproute2-2.6.23 mesh support patch 0.2.0":http://o11s.org/patches/iproute2/iproute2-2.6.24-mesh-support-0.2.0.patch.
+   * Tested with " iproute2-2.6.24-rc7":http://devresources.linux-foundation.org/dev/iproute2/download/iproute2-2.6.24-rc7.tar.bz2.
+* "o80211s wireshark-0.99.7 mesh support patch 0.2.0":http://o11s.org/patches/wireshark/wireshark-0.99.7-mesh-support-0.2.0.patch.
+   * Tested with "Wireshark 0.99.7":http://www.wireshark.org/download/src/wireshark-0.99.7.tar.gz
+* "HOWTO 0.2.0":/cozybit/open80211s/wiki/wiki:HOWTO-0.2.0
+
+h2. New features
+* Multicast/broacast frame forwarding with controlled flooding.
+* On-Demand HWMP (based on hopcount, not airtime link metric)
+
+h2. Known issues
+* Multiple links per peer are not supported.  To avoid deadlocks that would result from this limitation, a 'CLOSE' mesh peer link management frame will close all links 'ESTABLISHED' with the sender even if _link IDs_ do not match. 
